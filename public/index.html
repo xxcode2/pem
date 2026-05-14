@@ -265,7 +265,7 @@
         .letter-card p {
             font-size: 11.5px;
             color: var(--text-light);
-            line-height: 1.5;
+            line-height: 1.3;
         }
 
         /* FORM */
@@ -300,7 +300,7 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 16px;
-            margin-bottom: 16px;
+            margin-bottom: 10px;
         }
 
         .form-row.single {
@@ -503,10 +503,11 @@
         }
 
         .preview-content {
-            padding: 30px 40px;
-            min-height: 297mm;
+            padding: 20px 30px;
+            min-height: auto;
             font-family: 'Times New Roman', Times, serif;
-            font-size: 12pt;
+            font-size: 11pt;
+            line-height: 1.3;
         }
 
         /* SURAT FORMAT */
@@ -515,18 +516,18 @@
             align-items: center;
             border-bottom: 3px double #333;
             padding-bottom: 10px;
-            margin-bottom: 16px;
+            margin-bottom: 10px;
             gap: 2px;
         }
 
         .surat-kop .kop-logo {
-            width: 95px;
-            min-width: 95px;
+            width: 110px;
+            min-width: 110px;
         }
 
         .surat-kop .kop-logo img {
-            width: 95px;
-            height: 95px;
+            width: 110px;
+            height: 110px;
             object-fit: contain;
         }
 
@@ -565,7 +566,7 @@
 
         .surat-title {
             text-align: center;
-            margin: 24px 0;
+            margin: 12px 0;
         }
 
         .surat-title h2 {
@@ -583,8 +584,8 @@
 
         .surat-body {
             font-family: 'Times New Roman', Times, serif;
-            font-size: 12pt;
-            line-height: 1.5;
+            font-size: 11pt;
+            line-height: 1.3;
             text-align: justify;
         }
 
@@ -596,7 +597,7 @@
         .surat-body table td {
             padding: 1px 8px;
             vertical-align: top;
-            font-size: 12pt;
+            font-size: 11pt;
             line-height: 1.4;
         }
 
@@ -610,14 +611,14 @@
         }
 
         .surat-footer {
-            margin-top: 40px;
+            margin-top: 25px;
             text-align: right;
             font-family: 'Times New Roman', Times, serif;
-            font-size: 12pt;
+            font-size: 11pt;
         }
 
         .surat-footer .ttd-area {
-            margin-top: 50px;
+            margin-top: 35px;
         }
 
         .surat-footer .ttd-name {
@@ -793,7 +794,7 @@
 
         .empty-state .icon {
             font-size: 48px;
-            margin-bottom: 16px;
+            margin-bottom: 10px;
             opacity: 0.3;
         }
 
@@ -899,6 +900,10 @@
 
         /* PRINT STYLES */
         @media print {
+            @page {
+                margin: 0;
+                size: A4;
+            }
             body * {
                 visibility: hidden;
             }
@@ -910,9 +915,10 @@
                 left: 0;
                 top: 0;
                 width: 100%;
-                padding: 20px 40px;
+                padding: 15mm 20mm;
                 font-family: 'Times New Roman', Times, serif;
-                font-size: 12pt;
+                font-size: 11pt;
+                line-height: 1.3;
             }
         }
 
@@ -924,7 +930,7 @@
             font-size: 13px;
             color: var(--primary);
             font-weight: 600;
-            margin-bottom: 16px;
+            margin-bottom: 10px;
             border: 1px dashed var(--primary-light);
         }
 
@@ -1189,27 +1195,27 @@
                 <div class="settings-card">
                     <div class="settings-card-header">🏛️ Data Pemerintah Desa</div>
                     <div class="settings-card-body">
-                        <div class="form-group" style="margin-bottom:14px;">
+                        <div class="form-group" style="margin-bottom:8px;">
                             <label>Nama Desa</label>
                             <input type="text" id="setDesa" placeholder="Contoh: Sukamaju">
                         </div>
-                        <div class="form-group" style="margin-bottom:14px;">
+                        <div class="form-group" style="margin-bottom:8px;">
                             <label>Kecamatan</label>
                             <input type="text" id="setKecamatan" placeholder="Contoh: Ciamis">
                         </div>
-                        <div class="form-group" style="margin-bottom:14px;">
+                        <div class="form-group" style="margin-bottom:8px;">
                             <label>Kabupaten</label>
                             <input type="text" id="setKabupaten" placeholder="Contoh: Ciamis">
                         </div>
-                        <div class="form-group" style="margin-bottom:14px;">
+                        <div class="form-group" style="margin-bottom:8px;">
                             <label>Provinsi</label>
                             <input type="text" id="setProvinsi" placeholder="Contoh: Jawa Barat">
                         </div>
-                        <div class="form-group" style="margin-bottom:14px;">
+                        <div class="form-group" style="margin-bottom:8px;">
                             <label>Kode Pos</label>
                             <input type="text" id="setKodePos" placeholder="Contoh: 46211">
                         </div>
-                        <div class="form-group" style="margin-bottom:14px;">
+                        <div class="form-group" style="margin-bottom:8px;">
                             <label>Alamat Kantor Desa</label>
                             <input type="text" id="setAlamat" placeholder="Contoh: Jl. Raya Desa No. 1">
                         </div>
@@ -1219,24 +1225,24 @@
                 <div class="settings-card">
                     <div class="settings-card-header">👤 Data Kepala Desa / Penandatangan</div>
                     <div class="settings-card-body">
-                        <div class="form-group" style="margin-bottom:14px;">
+                        <div class="form-group" style="margin-bottom:8px;">
                             <label>Nama Kepala Desa</label>
                             <input type="text" id="setKades" placeholder="Nama lengkap Kades">
                         </div>
-                        <div class="form-group" style="margin-bottom:14px;">
+                        <div class="form-group" style="margin-bottom:8px;">
                             <label>NIP Kepala Desa (opsional)</label>
                             <input type="text" id="setNipKades" placeholder="NIP">
                         </div>
-                        <div class="form-group" style="margin-bottom:14px;">
+                        <div class="form-group" style="margin-bottom:8px;">
                             <label>Nama Sekretaris Desa</label>
                             <input type="text" id="setSekdes" placeholder="Nama lengkap Sekdes">
                         </div>
-                        <div class="form-group" style="margin-bottom:14px;">
+                        <div class="form-group" style="margin-bottom:8px;">
                             <label>NIP Sekdes (opsional)</label>
                             <input type="text" id="setNipSekdes" placeholder="NIP">
                         </div>
                         <hr style="margin:16px 0;border:none;border-top:1px solid var(--border);">
-                        <div class="form-group" style="margin-bottom:14px;">
+                        <div class="form-group" style="margin-bottom:8px;">
                             <label>Upload Logo</label>
                             <div class="logo-uploads-row">
                                 <div class="logo-upload-item">
@@ -2194,18 +2200,18 @@ function generateSuratHTML(data) {
         case 'kematian':
             bodyHTML = `
                 <div class="surat-body" style="font-family:'Times New Roman',Times,serif;font-size:12pt;line-height:1.6;">
-                    <table style="margin-bottom:16px;">
-                        <tr><td style="width:200px;">Pemerintah/Kota/Kab</td><td style="width:15px;">:</td><td>${s.kabupaten || '...'}</td></tr>
+                    <table style="margin-bottom:10px;width:auto;">
+                        <tr><td>Kabupaten</td><td style="width:15px;">:</td><td>${s.kabupaten || '...'}</td></tr>
                         <tr><td>Kecamatan</td><td>:</td><td>${s.kecamatan || '...'}</td></tr>
-                        <tr><td>Desa/Kelurahan</td><td>:</td><td>${s.desa || '...'}</td></tr>
+                        <tr><td>Desa</td><td>:</td><td>${s.desa || '...'}</td></tr>
                     </table>
 
-                    <div style="text-align:center;margin:24px 0 16px;">
-                        <h2 style="font-size:14pt;text-decoration:underline;text-transform:uppercase;font-weight:700;letter-spacing:1px;margin:0;">SURAT KETERANGAN KEMATIAN</h2>
-                        <p style="font-size:11pt;margin-top:4px;">Nomor: ${noSurat}</p>
+                    <div style="text-align:center;margin:12px 0 10px;">
+                        <h2 style="font-size:12pt;text-decoration:underline;text-transform:uppercase;font-weight:700;margin:0;">SURAT KETERANGAN KEMATIAN</h2>
+                        <p style="font-size:10pt;margin-top:2px;">Nomor: ${noSurat}</p>
                     </div>
 
-                    <p style="margin-bottom:14px;">Yang bertanda tangan dibawah ini menerangkan</p>
+                    <p style="margin-bottom:8px;">Yang bertanda tangan dibawah ini menerangkan</p>
 
                     <table>
                         <tr><td style="width:200px;">Nama</td><td style="width:15px;">:</td><td><strong>${data.namaAlm || data.nama}</strong></td></tr>
@@ -2216,7 +2222,7 @@ function generateSuratHTML(data) {
                         <tr><td>Alamat</td><td>:</td><td>${data.alamatAlm || data.alamat} RT ${data.rtAlm || data.rt} RW ${data.rwAlm || data.rw} Kec. ${s.kecamatan} Kab. ${s.kabupaten}</td></tr>
                     </table>
 
-                    <p style="margin-top:18px;">Telah meninggal dunia <span style="text-decoration:underline;">pada</span> :</p>
+                    <p style="margin-top:10px;">Telah meninggal dunia <span style="text-decoration:underline;">pada</span> :</p>
                     <table>
                         <tr><td style="width:200px;">Hari</td><td style="width:15px;">:</td><td>${data.hariMeninggal || '-'}</td></tr>
                         <tr><td>Tanggal</td><td>:</td><td>${tanggalIndonesia(data.tglMeninggal)}</td></tr>
@@ -2224,7 +2230,7 @@ function generateSuratHTML(data) {
                         <tr><td>Penyebab Kematian</td><td>:</td><td>${data.penyebabMeninggal || '-'}</td></tr>
                     </table>
 
-                    <p style="margin-top:18px;">Surat Keterangan ini dibuat berdasarkan keterangan Pelapor :</p>
+                    <p style="margin-top:10px;">Surat Keterangan ini dibuat berdasarkan keterangan Pelapor :</p>
                     <table>
                         <tr><td style="width:200px;">Nama Lengkap</td><td style="width:15px;">:</td><td><strong>${data.namaPelapor}</strong></td></tr>
                         <tr><td>Tanggal Lahir/Umur</td><td>:</td><td>${data.tglLahirPelapor || '-'}</td></tr>
@@ -2232,7 +2238,7 @@ function generateSuratHTML(data) {
                         <tr><td>Alamat</td><td>:</td><td>${data.alamatPelapor || data.alamatAlm || data.alamat} Kec. ${s.kecamatan} Kab. ${s.kabupaten}</td></tr>
                     </table>
 
-                    <p style="margin-top:18px;">Hubungan pelapor dengan yang meninggal adalah : <strong>${data.hubPelapor || '-'}</strong></p>
+                    <p style="margin-top:10px;">Hubungan pelapor dengan yang meninggal adalah : <strong>${data.hubPelapor || '-'}</strong></p>
                 </div>
             `;
             break;
@@ -2383,7 +2389,7 @@ function generateSuratHTML(data) {
             <div class="surat-footer">
                 <p>${s.desa || '...'}, ${tgl}</p>
                 <p>a.n Kepala Desa ${s.desa || '...'}</p>
-                <p>Sekretaris Desa</p>
+                <p style="margin-top:0;">Sekretaris Desa</p>
                 <div class="ttd-area">
                     <div class="ttd-name">${s.sekdes || '................................'}</div>
                     ${s.nipSekdes ? `<div class="ttd-jabatan">NIP. ${s.nipSekdes}</div>` : ''}
@@ -2541,7 +2547,7 @@ async function saveAndPrint() {
 function printSurat() {
     const printContent = document.getElementById('previewContent').innerHTML;
     const isKematian = currentForm === 'kematian';
-    const pageOrientation = isKematian ? '@page { size: landscape; }' : '@page { size: portrait; }';
+    const pageOrientation = '@page { size: portrait; margin: 0; }';
     const printWindow = window.open('', '_blank');
     printWindow.document.write(`
         <!DOCTYPE html>
@@ -2549,36 +2555,47 @@ function printSurat() {
         <head>
             <title>Cetak Surat</title>
             <style>
-                body { font-family: 'Times New Roman', Times, serif; margin: 0; padding: 20px 40px; font-size: 12pt; line-height: 1.6; }
-                .surat-kop { display: flex; align-items: center; border-bottom: 3px double #333; padding-bottom: 10px; margin-bottom: 16px; gap: 6px; }
-                .surat-kop .kop-logo { width: 75px; min-width: 75px; }
-                .surat-kop .kop-logo img { width: 75px; height: 75px; object-fit: contain; }
-                .surat-kop .kop-text { flex: 1; text-align: center; }
-                .surat-kop .kop-title { font-size: 13pt; font-weight: 700; text-transform: uppercase; }
-                .surat-kop .kop-subtitle { font-size: 16pt; font-weight: 800; text-transform: uppercase; margin: 4px 0; }
-                .surat-kop .kop-address { font-size: 10pt; color: #444; }
-                .surat-title { text-align: center; margin: 24px 0; }
-                .surat-title h2 { font-size: 13pt; text-decoration: underline; text-transform: uppercase; font-weight: 700; }
-                .surat-title p { font-size: 11pt; margin-top: 4px; }
-                .surat-body { font-size: 12pt; line-height: 1.5; text-align: justify; }
-                .surat-body table { width: 100%; margin: 4px 0; border-collapse: collapse; }
-                .surat-body table td { padding: 1px 8px; vertical-align: top; font-size: 12pt; line-height: 1.4; }
-                .surat-body table td:first-child { width: 160px; font-weight: 600; }
-                .surat-body table td:nth-child(2) { width: 15px; }
-                .surat-footer { margin-top: 40px; text-align: right; font-size: 12pt; }
-                .surat-footer .ttd-area { margin-top: 50px; }
-                .surat-footer .ttd-name { font-weight: 700; text-decoration: underline; }
-                .surat-footer .ttd-jabatan { font-size: 10pt; }
-                ${pageOrientation}
-                @media print {
-                    body { padding: 15mm 20mm; }
+                * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+                @page { size: A4; margin: 0; }
+                @page {
+                    size: A4;
+                    margin: 0;
                 }
+                @page :first {
+                    margin: 0;
+                }
+                html { margin: 0; }
+                body { font-family: 'Times New Roman', Times, serif; margin: 15mm 20mm; font-size: 11pt; line-height: 1.3; }
+                @media print {
+                    @page { margin: 0; }
+                    html, body { width: 210mm; height: 297mm; margin: 0; padding: 10mm 15mm; box-sizing: border-box; }
+                }
+                .surat-kop { display: flex; align-items: center; border-bottom: 3px double #333; padding-bottom: 8px; margin-bottom: 12px; gap: 6px; }
+                .surat-kop .kop-logo { width: 85px; min-width: 85px; }
+                .surat-kop .kop-logo img { width: 85px; height: 85px; object-fit: contain; }
+                .surat-kop .kop-text { flex: 1; text-align: center; }
+                .surat-kop .kop-title { font-size: 11pt; font-weight: 700; text-transform: uppercase; }
+                .surat-kop .kop-subtitle { font-size: 15pt; font-weight: 800; text-transform: uppercase; margin: 2px 0; }
+                .surat-kop .kop-address { font-size: 9pt; color: #444; }
+                .surat-title { text-align: center; margin: 16px 0; }
+                .surat-title h2 { font-size: 11pt; text-decoration: underline; text-transform: uppercase; font-weight: 700; }
+                .surat-title p { font-size: 10pt; margin-top: 2px; }
+                .surat-body { font-size: 11pt; line-height: 1.4; text-align: justify; }
+                .surat-body table { width: 100%; margin: 2px 0; border-collapse: collapse; }
+                .surat-body table td { padding: 1px 6px; vertical-align: top; font-size: 11pt; line-height: 1.3; }
+                .surat-body table td:first-child { width: 140px; font-weight: 600; }
+                .surat-body table td:nth-child(2) { width: 12px; }
+                .surat-footer { margin-top: 30px; text-align: right; font-size: 11pt; }
+                .surat-footer .ttd-area { margin-top: 25px; }
+                .surat-footer .ttd-name { font-weight: 700; text-decoration: underline; }
+                .surat-footer .ttd-jabatan { font-size: 9pt; }
+                ${pageOrientation}
             </style>
         </head>
         <body>
             ${printContent}
             <script>
-                window.onload = function() { window.print(); }
+                window.onload = function() { window.print(); window.close(); }
             <\/script>
         </body>
         </html>
@@ -2594,26 +2611,28 @@ function downloadWord() {
             <meta charset="utf-8">
             <title>Surat</title>
             <style>
-                body { font-family: 'Times New Roman', Times, serif; font-size: 12pt; line-height: 1.6; margin: 20px 40px; }
-                .surat-kop { display: flex; align-items: center; border-bottom: 3px double #333; padding-bottom: 10px; margin-bottom: 16px; gap: 6px; }
-                .surat-kop .kop-logo { width: 75px; min-width: 75px; }
-                .surat-kop .kop-logo img { width: 75px; height: 75px; object-fit: contain; }
+                * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+                @page { size: A4; margin: 0; }
+                body { font-family: 'Times New Roman', Times, serif; font-size: 11pt; line-height: 1.4; margin: 15mm 20mm; }
+                .surat-kop { display: flex; align-items: center; border-bottom: 3px double #333; padding-bottom: 8px; margin-bottom: 10px; gap: 6px; }
+                .surat-kop .kop-logo { width: 85px; min-width: 85px; }
+                .surat-kop .kop-logo img { width: 85px; height: 85px; object-fit: contain; }
                 .surat-kop .kop-text { flex: 1; text-align: center; }
-                .surat-kop .kop-title { font-size: 13pt; font-weight: 700; text-transform: uppercase; }
-                .surat-kop .kop-subtitle { font-size: 16pt; font-weight: 800; text-transform: uppercase; margin: 4px 0; }
-                .surat-kop .kop-address { font-size: 10pt; color: #444; }
-                .surat-title { text-align: center; margin: 24px 0; }
-                .surat-title h2 { font-size: 13pt; text-decoration: underline; text-transform: uppercase; font-weight: 700; }
-                .surat-title p { font-size: 11pt; margin-top: 4px; }
-                .surat-body { font-size: 12pt; line-height: 1.8; text-align: justify; }
-                .surat-body table { width: 100%; margin: 10px 0; }
-                .surat-body table td { padding: 3px 8px; vertical-align: top; font-size: 12pt; }
-                .surat-body table td:first-child { width: 180px; font-weight: 600; }
-                .surat-body table td:nth-child(2) { width: 15px; }
-                .surat-footer { margin-top: 40px; text-align: right; font-size: 12pt; }
-                .surat-footer .ttd-area { margin-top: 50px; }
+                .surat-kop .kop-title { font-size: 11pt; font-weight: 700; text-transform: uppercase; }
+                .surat-kop .kop-subtitle { font-size: 15pt; font-weight: 800; text-transform: uppercase; margin: 2px 0; }
+                .surat-kop .kop-address { font-size: 9pt; color: #444; }
+                .surat-title { text-align: center; margin: 12px 0; }
+                .surat-title h2 { font-size: 11pt; text-decoration: underline; text-transform: uppercase; font-weight: 700; }
+                .surat-title p { font-size: 10pt; margin-top: 2px; }
+                .surat-body { font-size: 11pt; line-height: 1.3; text-align: justify; }
+                .surat-body table { width: 100%; margin: 2px 0; }
+                .surat-body table td { padding: 1px 6px; vertical-align: top; font-size: 11pt; }
+                .surat-body table td:first-child { width: 140px; font-weight: 600; }
+                .surat-body table td:nth-child(2) { width: 12px; }
+                .surat-footer { margin-top: 25px; text-align: right; font-size: 11pt; }
+                .surat-footer .ttd-area { margin-top: 35px; }
                 .surat-footer .ttd-name { font-weight: 700; text-decoration: underline; }
-                .surat-footer .ttd-jabatan { font-size: 10pt; }
+                .surat-footer .ttd-jabatan { font-size: 9pt; }
             </style>
         </head>
         <body>${printContent}</body>
