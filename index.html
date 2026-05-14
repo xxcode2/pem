@@ -516,17 +516,17 @@
             border-bottom: 3px double #333;
             padding-bottom: 10px;
             margin-bottom: 16px;
-            gap: 10px;
+            gap: 6px;
         }
 
         .surat-kop .kop-logo {
-            width: 65px;
-            min-width: 65px;
+            width: 75px;
+            min-width: 75px;
         }
 
         .surat-kop .kop-logo img {
-            width: 65px;
-            height: 65px;
+            width: 75px;
+            height: 75px;
             object-fit: contain;
         }
 
@@ -1623,10 +1623,54 @@ function getFormHTML(type) {
                         <input type="text" id="namaAlm" placeholder="Nama lengkap almarhum/almarhumah">
                     </div>
                     <div class="form-group">
-                        <label>NIK Almarhum/Almarhumah</label>
-                        <input type="text" id="nikAlm" placeholder="16 digit NIK" maxlength="16" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+                        <label>Jenis Kelamin <span class="req">*</span></label>
+                        <select id="jkAlm">
+                            <option value="">-- Pilih --</option>
+                            <option value="Laki-laki">Laki-laki</option>
+                            <option value="Perempuan">Perempuan</option>
+                        </select>
                     </div>
                 </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Agama</label>
+                        <select id="agamaAlm">
+                            <option value="">-- Pilih --</option>
+                            <option>Islam</option>
+                            <option>Kristen</option>
+                            <option>Katolik</option>
+                            <option>Hindu</option>
+                            <option>Buddha</option>
+                            <option>Konghucu</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Tempat/Tanggal Lahir</label>
+                        <input type="text" id="ttlAlm" placeholder="Contoh: Subang, 01-01-1961">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Pekerjaan</label>
+                        <input type="text" id="pekerjaanAlm" placeholder="Contoh: Wiraswasta">
+                    </div>
+                    <div class="form-group">
+                        <label>Alamat</label>
+                        <input type="text" id="alamatAlm" placeholder="Contoh: Kp. Karihkil">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>RT</label>
+                        <input type="text" id="rtAlm" placeholder="Contoh: 04">
+                    </div>
+                    <div class="form-group">
+                        <label>RW</label>
+                        <input type="text" id="rwAlm" placeholder="Contoh: 01">
+                    </div>
+                </div>
+
+                <div class="form-section-title">📅 Data Kematian</div>
                 <div class="form-row">
                     <div class="form-group">
                         <label>Hari Meninggal <span class="req">*</span></label>
@@ -1639,45 +1683,40 @@ function getFormHTML(type) {
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label>Waktu Meninggal</label>
-                        <input type="time" id="waktuMeninggal">
-                    </div>
-                    <div class="form-group">
                         <label>Tempat Meninggal <span class="req">*</span></label>
-                        <input type="text" id="tempatMeninggal" placeholder="Contoh: Rumah, RS, dll">
+                        <input type="text" id="tempatMeninggal" placeholder="Contoh: Rumah duka">
                     </div>
-                </div>
-                <div class="form-row single">
                     <div class="form-group">
                         <label>Penyebab Kematian</label>
-                        <input type="text" id="penyebabMeninggal" placeholder="Contoh: Sakit, kecelakaan">
+                        <input type="text" id="penyebabMeninggal" placeholder="Contoh: Sakit">
                     </div>
                 </div>
+
                 <div class="form-section-title">👥 Data Pelapor</div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label>Nama Pelapor / Keluarga <span class="req">*</span></label>
-                        <input type="text" id="namaPelapor" placeholder="Nama pelapor">
+                        <label>Nama Pelapor <span class="req">*</span></label>
+                        <input type="text" id="namaPelapor" placeholder="Nama lengkap pelapor">
                     </div>
                     <div class="form-group">
                         <label>Tanggal Lahir / Umur Pelapor</label>
-                        <input type="text" id="tglLahirPelapor" placeholder="Contoh: 12 Mei 1985 / 38 Tahun">
+                        <input type="text" id="tglLahirPelapor" placeholder="Contoh: Subang, 31-03-2000">
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
                         <label>Pekerjaan Pelapor</label>
-                        <input type="text" id="pekerjaanPelapor" placeholder="Contoh: Petani, Wiraswasta">
+                        <input type="text" id="pekerjaanPelapor" placeholder="Contoh: Wiraswasta">
                     </div>
                     <div class="form-group">
                         <label>Hubungan dengan Almarhum</label>
-                        <input type="text" id="hubPelapor" placeholder="Contoh: Anak, Istri, Saudara">
+                        <input type="text" id="hubPelapor" placeholder="Contoh: ANAK KANDUNG">
                     </div>
                 </div>
                 <div class="form-row single">
                     <div class="form-group">
                         <label>Alamat Pelapor</label>
-                        <input type="text" id="alamatPelapor" placeholder="Alamat pelapor">
+                        <input type="text" id="alamatPelapor" placeholder="Contoh: Kp. Karihkil RT 04 RW 01">
                     </div>
                 </div>
             `;
@@ -1891,6 +1930,25 @@ function getFormHTML(type) {
             break;
     }
 
+    // For kematian, skip the common pemohon section - it has its own complete form
+    if (type === 'kematian') {
+        const kematianHeader = `
+            <div class="nomor-surat-display" id="nomorSuratDisplay">Nomor Surat: -</div>
+            <div class="form-section-title">📋 Data Surat</div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Tanggal Surat <span class="req">*</span></label>
+                    <input type="date" id="tglSurat" value="${new Date().toISOString().split('T')[0]}">
+                </div>
+                <div class="form-group">
+                    <label>Nomor Surat</label>
+                    <input type="text" id="noSurat" placeholder="Auto-generated" readonly>
+                </div>
+            </div>
+        `;
+        return kematianHeader + extra + penandatanganSection;
+    }
+
     return common + extra + penandatanganSection;
 }
 
@@ -1926,10 +1984,15 @@ function getFormData() {
     }
     if (currentForm === 'kematian') {
         data.namaAlm = document.getElementById('namaAlm')?.value || '';
-        data.nikAlm = document.getElementById('nikAlm')?.value || '';
+        data.jkAlm = document.getElementById('jkAlm')?.value || '';
+        data.agamaAlm = document.getElementById('agamaAlm')?.value || '';
+        data.ttlAlm = document.getElementById('ttlAlm')?.value || '';
+        data.pekerjaanAlm = document.getElementById('pekerjaanAlm')?.value || '';
+        data.alamatAlm = document.getElementById('alamatAlm')?.value || '';
+        data.rtAlm = document.getElementById('rtAlm')?.value || '';
+        data.rwAlm = document.getElementById('rwAlm')?.value || '';
         data.hariMeninggal = document.getElementById('hariMeninggal')?.value || '';
         data.tglMeninggal = document.getElementById('tglMeninggal')?.value || '';
-        data.waktuMeninggal = document.getElementById('waktuMeninggal')?.value || '';
         data.tempatMeninggal = document.getElementById('tempatMeninggal')?.value || '';
         data.penyebabMeninggal = document.getElementById('penyebabMeninggal')?.value || '';
         data.namaPelapor = document.getElementById('namaPelapor')?.value || '';
@@ -2109,11 +2172,11 @@ function generateSuratHTML(data) {
 
                     <table>
                         <tr><td style="width:200px;">Nama</td><td style="width:15px;">:</td><td><strong>${data.namaAlm || data.nama}</strong></td></tr>
-                        <tr><td>Jenis Kelamin</td><td>:</td><td>${data.jk}</td></tr>
-                        <tr><td>Agama</td><td>:</td><td>${data.agama}</td></tr>
-                        <tr><td>Tempat/Tanggal Lahir</td><td>:</td><td>${data.ttl}</td></tr>
-                        <tr><td>Pekerjaan</td><td>:</td><td>${data.pekerjaan}</td></tr>
-                        <tr><td>Alamat</td><td>:</td><td>${data.alamat} RT ${data.rt} RW ${data.rw} Kec. ${s.kecamatan} Kab. ${s.kabupaten}</td></tr>
+                        <tr><td>Jenis Kelamin</td><td>:</td><td>${data.jkAlm || data.jk}</td></tr>
+                        <tr><td>Agama</td><td>:</td><td>${data.agamaAlm || data.agama}</td></tr>
+                        <tr><td>Tempat/Tanggal Lahir</td><td>:</td><td>${data.ttlAlm || data.ttl}</td></tr>
+                        <tr><td>Pekerjaan</td><td>:</td><td>${data.pekerjaanAlm || data.pekerjaan}</td></tr>
+                        <tr><td>Alamat</td><td>:</td><td>${data.alamatAlm || data.alamat} RT ${data.rtAlm || data.rt} RW ${data.rwAlm || data.rw} Kec. ${s.kecamatan} Kab. ${s.kabupaten}</td></tr>
                     </table>
 
                     <p style="margin-top:18px;">Telah meninggal dunia <span style="text-decoration:underline;">pada</span> :</p>
@@ -2129,7 +2192,7 @@ function generateSuratHTML(data) {
                         <tr><td style="width:200px;">Nama Lengkap</td><td style="width:15px;">:</td><td><strong>${data.namaPelapor}</strong></td></tr>
                         <tr><td>Tanggal Lahir/Umur</td><td>:</td><td>${data.tglLahirPelapor || '-'}</td></tr>
                         <tr><td>Pekerjaan</td><td>:</td><td>${data.pekerjaanPelapor || '-'}</td></tr>
-                        <tr><td>Alamat</td><td>:</td><td>${data.alamatPelapor || data.alamat} Kec. ${s.kecamatan} Kab. ${s.kabupaten}</td></tr>
+                        <tr><td>Alamat</td><td>:</td><td>${data.alamatPelapor || data.alamatAlm || data.alamat} Kec. ${s.kecamatan} Kab. ${s.kabupaten}</td></tr>
                     </table>
 
                     <p style="margin-top:18px;">Hubungan pelapor dengan yang meninggal adalah : <strong>${data.hubPelapor || '-'}</strong></p>
@@ -2317,9 +2380,16 @@ function generateSuratHTML(data) {
 // ==========================================
 function previewSurat() {
     const data = getFormData();
-    if (!data.nama || !data.nik) {
-        showToast('Harap isi Nama dan NIK terlebih dahulu!', 'error');
-        return;
+    if (currentForm === 'kematian') {
+        if (!data.namaAlm) {
+            showToast('Harap isi Nama Almarhum terlebih dahulu!', 'error');
+            return;
+        }
+    } else {
+        if (!data.nama || !data.nik) {
+            showToast('Harap isi Nama dan NIK terlebih dahulu!', 'error');
+            return;
+        }
     }
 
     const html = generateSuratHTML(data);
@@ -2357,9 +2427,18 @@ function getHistory() {
 
 function saveAndPrint() {
     const data = getFormData();
-    if (!data.nama || !data.nik) {
-        showToast('Harap isi Nama dan NIK terlebih dahulu!', 'error');
-        return;
+    if (currentForm === 'kematian') {
+        if (!data.namaAlm) {
+            showToast('Harap isi Nama Almarhum terlebih dahulu!', 'error');
+            return;
+        }
+        data.nama = data.namaAlm;
+        data.nik = '-';
+    } else {
+        if (!data.nama || !data.nik) {
+            showToast('Harap isi Nama dan NIK terlebih dahulu!', 'error');
+            return;
+        }
     }
 
     // Save to history
@@ -2390,9 +2469,9 @@ function printSurat() {
             <title>Cetak Surat</title>
             <style>
                 body { font-family: 'Times New Roman', Times, serif; margin: 0; padding: 20px 40px; font-size: 12pt; line-height: 1.6; }
-                .surat-kop { display: flex; align-items: center; border-bottom: 3px double #333; padding-bottom: 10px; margin-bottom: 16px; gap: 10px; }
-                .surat-kop .kop-logo { width: 65px; min-width: 65px; }
-                .surat-kop .kop-logo img { width: 65px; height: 65px; object-fit: contain; }
+                .surat-kop { display: flex; align-items: center; border-bottom: 3px double #333; padding-bottom: 10px; margin-bottom: 16px; gap: 6px; }
+                .surat-kop .kop-logo { width: 75px; min-width: 75px; }
+                .surat-kop .kop-logo img { width: 75px; height: 75px; object-fit: contain; }
                 .surat-kop .kop-text { flex: 1; text-align: center; }
                 .surat-kop .kop-title { font-size: 13pt; font-weight: 700; text-transform: uppercase; }
                 .surat-kop .kop-subtitle { font-size: 16pt; font-weight: 800; text-transform: uppercase; margin: 4px 0; }
@@ -2435,9 +2514,9 @@ function downloadWord() {
             <title>Surat</title>
             <style>
                 body { font-family: 'Times New Roman', Times, serif; font-size: 12pt; line-height: 1.6; margin: 20px 40px; }
-                .surat-kop { display: flex; align-items: center; border-bottom: 3px double #333; padding-bottom: 10px; margin-bottom: 16px; gap: 10px; }
-                .surat-kop .kop-logo { width: 65px; min-width: 65px; }
-                .surat-kop .kop-logo img { width: 65px; height: 65px; object-fit: contain; }
+                .surat-kop { display: flex; align-items: center; border-bottom: 3px double #333; padding-bottom: 10px; margin-bottom: 16px; gap: 6px; }
+                .surat-kop .kop-logo { width: 75px; min-width: 75px; }
+                .surat-kop .kop-logo img { width: 75px; height: 75px; object-fit: contain; }
                 .surat-kop .kop-text { flex: 1; text-align: center; }
                 .surat-kop .kop-title { font-size: 13pt; font-weight: 700; text-transform: uppercase; }
                 .surat-kop .kop-subtitle { font-size: 16pt; font-weight: 800; text-transform: uppercase; margin: 4px 0; }
