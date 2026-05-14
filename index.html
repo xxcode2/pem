@@ -1477,28 +1477,23 @@ function getFormHTML(type) {
                 <div class="form-section-title">🏪 Data Usaha</div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label>Nama Usaha <span class="req">*</span></label>
-                        <input type="text" id="namaUsaha" placeholder="Nama usaha/toko">
-                    </div>
-                    <div class="form-group">
                         <label>Jenis Usaha <span class="req">*</span></label>
                         <input type="text" id="jenisUsaha" placeholder="Contoh: Warung Makanan, Toko Kelontong">
                     </div>
-                </div>
-                <div class="form-row single">
                     <div class="form-group">
                         <label>Alamat Usaha</label>
                         <input type="text" id="alamatUsaha" placeholder="Jika berbeda dengan alamat domisili">
                     </div>
                 </div>
-                <div class="form-row">
+
+                <div class="form-section-title">✍️ Penandatangan</div>
+                <div class="form-row single">
                     <div class="form-group">
-                        <label>Beroperasi Sejak</label>
-                        <input type="text" id="sejakUsaha" placeholder="Contoh: Tahun 2020">
-                    </div>
-                    <div class="form-group">
-                        <label>Jumlah Karyawan</label>
-                        <input type="number" id="jmlKaryawan" placeholder="0" value="0">
+                        <label>Ditandatangani oleh <span class="req">*</span></label>
+                        <select id="penandatangan">
+                            <option value="kades">Kepala Desa</option>
+                            <option value="sekdes">Sekretaris Desa (a.n Kepala Desa)</option>
+                        </select>
                     </div>
                 </div>
             `;
@@ -1809,11 +1804,9 @@ function getFormData() {
 
     // Extra fields based on type
     if (currentForm === 'sku') {
-        data.namaUsaha = document.getElementById('namaUsaha')?.value || '';
         data.jenisUsaha = document.getElementById('jenisUsaha')?.value || '';
         data.alamatUsaha = document.getElementById('alamatUsaha')?.value || data.alamat;
-        data.sejakUsaha = document.getElementById('sejakUsaha')?.value || '';
-        data.jmlKaryawan = document.getElementById('jmlKaryawan')?.value || '0';
+        data.penandatangan = document.getElementById('penandatangan')?.value || 'kades';
     }
     if (currentForm === 'domisili') {
         data.alamatDomisili = document.getElementById('alamatDomisili')?.value || data.alamat;
@@ -1942,13 +1935,10 @@ function generateSuratHTML(data) {
                     </table>
                     <p style="margin-top:14px;">Bahwa orang tersebut di atas benar-benar memiliki / menjalankan usaha:</p>
                     <table>
-                        <tr><td>Nama Usaha</td><td>:</td><td><strong>${data.namaUsaha}</strong></td></tr>
                         <tr><td>Jenis Usaha</td><td>:</td><td>${data.jenisUsaha}</td></tr>
                         <tr><td>Alamat Usaha</td><td>:</td><td>${data.alamatUsaha}</td></tr>
-                        <tr><td>Beroperasi Sejak</td><td>:</td><td>${data.sejakUsaha}</td></tr>
-                        <tr><td>Jumlah Karyawan</td><td>:</td><td>${data.jmlKaryawan} orang</td></tr>
                     </table>
-                    <p style="margin-top:14px;">Surat Keterangan ini diterbitkan untuk keperluan <strong>${data.keperluanDomisili || 'pengurusan usaha'}</strong>. Demikian surat keterangan ini dibuat untuk dapat dipergunakan sebagaimana mestinya.</p>
+                    <p style="margin-top:14px;">Surat Keterangan ini diterbitkan untuk keperluan <strong>pengurusan dokumen</strong>. Demikian surat keterangan ini dibuat untuk dapat dipergunakan sebagaimana mestinya.</p>
                 </div>
             `;
             break;
@@ -2155,16 +2145,31 @@ function generateSuratHTML(data) {
     }
 
     // TTD
-    const ttdHTML = `
-        <div class="surat-footer">
-            <p>${s.desa || '...'}, ${tgl}</p>
-            <p>Kepala Desa ${s.desa || '...'}</p>
-            <div class="ttd-area">
-                <div class="ttd-name">${s.kades || '................................'}</div>
-                ${s.nipKades ? `<div class="ttd-jabatan">NIP. ${s.nipKades}</div>` : ''}
+    let ttdHTML = '';
+    if (currentForm === 'sku' && data.penandatangan === 'sekdes') {
+        ttdHTML = `
+            <div class="surat-footer">
+                <p>${s.desa || '...'}, ${tgl}</p>
+                <p>a.n Kepala Desa ${s.desa || '...'}</p>
+                <p>Sekretaris Desa</p>
+                <div class="ttd-area">
+                    <div class="ttd-name">${s.sekdes || '................................'}</div>
+                    ${s.nipSekdes ? `<div class="ttd-jabatan">NIP. ${s.nipSekdes}</div>` : ''}
+                </div>
             </div>
-        </div>
-    `;
+        `;
+    } else {
+        ttdHTML = `
+            <div class="surat-footer">
+                <p>${s.desa || '...'}, ${tgl}</p>
+                <p>Kepala Desa ${s.desa || '...'}</p>
+                <div class="ttd-area">
+                    <div class="ttd-name">${s.kades || '................................'}</div>
+                    ${s.nipKades ? `<div class="ttd-jabatan">NIP. ${s.nipKades}</div>` : ''}
+                </div>
+            </div>
+        `;
+    }
 
     return kopHTML + bodyHTML + ttdHTML;
 }
