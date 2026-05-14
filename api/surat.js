@@ -59,7 +59,11 @@ module.exports = async function handler(req, res) {
             }
 
             if (id) {
-                await sql`DELETE FROM surat_history WHERE id = ${parseInt(id)}`;
+                const parsedId = parseInt(id);
+                if (isNaN(parsedId)) {
+                    return res.status(400).json({ error: 'Invalid id parameter' });
+                }
+                await sql`DELETE FROM surat_history WHERE id = ${parsedId}`;
                 return res.status(200).json({ success: true });
             }
 

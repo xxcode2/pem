@@ -2462,6 +2462,7 @@ async function saveSuratToHistory(data) {
         if (response.ok) {
             const result = await response.json();
             record.id = result.id;
+            _historyCache = null;
         }
     } catch (err) {
         console.warn('Failed to save surat to API, saved to localStorage only:', err);
@@ -2714,7 +2715,6 @@ async function deleteHistory(id) {
         let history = await getHistory();
         history = history.filter(h => h.id !== id);
         localStorage.setItem('sisdes_history', JSON.stringify(history));
-        _historyCache = history;
 
         try {
             await fetch(`/api/surat?id=${id}`, { method: 'DELETE' });
@@ -2722,6 +2722,7 @@ async function deleteHistory(id) {
             console.warn('Failed to delete from API:', err);
         }
 
+        _historyCache = null;
         renderHistory();
         updateHistoryCount();
         updateStats();
@@ -2732,7 +2733,6 @@ async function deleteHistory(id) {
 async function clearHistory() {
     if (confirm('Yakin ingin menghapus SEMUA riwayat surat?')) {
         localStorage.removeItem('sisdes_history');
-        _historyCache = [];
 
         try {
             await fetch('/api/surat?all=true', { method: 'DELETE' });
@@ -2740,6 +2740,7 @@ async function clearHistory() {
             console.warn('Failed to clear history from API:', err);
         }
 
+        _historyCache = null;
         renderHistory();
         updateHistoryCount();
         updateStats();

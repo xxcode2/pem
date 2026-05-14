@@ -45,6 +45,6 @@ module.exports = async function handler(req, res) {
         return res.status(200).json({ success: true, message: 'Database initialized successfully' });
     } catch (error) {
         console.error('Init DB error:', error);
-        return res.status(500).json({ error: 'Failed to initialize database', details: error.message });
+        return res.status(500).json({ error: 'Failed to initialize database' });
     }
 };
