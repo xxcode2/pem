@@ -503,17 +503,36 @@
         }
 
         .preview-content {
-            padding: 40px 50px;
+            padding: 30px 40px;
             min-height: 297mm;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 12pt;
         }
 
         /* SURAT FORMAT */
         .surat-kop {
-            text-align: center;
+            display: flex;
+            align-items: center;
             border-bottom: 3px double #333;
             padding-bottom: 12px;
             margin-bottom: 20px;
-            position: relative;
+        }
+
+        .surat-kop .kop-logo {
+            width: 50px;
+            min-width: 50px;
+            margin-right: 12px;
+        }
+
+        .surat-kop .kop-logo img {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+        }
+
+        .surat-kop .kop-text {
+            flex: 1;
+            text-align: center;
         }
 
         .surat-kop .kop-title {
@@ -556,7 +575,8 @@
         }
 
         .surat-body {
-            font-size: 12.5px;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 12pt;
             line-height: 1.8;
             text-align: justify;
         }
@@ -569,7 +589,7 @@
         .surat-body table td {
             padding: 3px 8px;
             vertical-align: top;
-            font-size: 12.5px;
+            font-size: 12pt;
         }
 
         .surat-body table td:first-child {
@@ -584,11 +604,12 @@
         .surat-footer {
             margin-top: 40px;
             text-align: right;
-            font-size: 12.5px;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 12pt;
         }
 
         .surat-footer .ttd-area {
-            margin-top: 70px;
+            margin-top: 50px;
         }
 
         .surat-footer .ttd-name {
@@ -882,6 +903,8 @@
                 top: 0;
                 width: 100%;
                 padding: 20px 40px;
+                font-family: 'Times New Roman', Times, serif;
+                font-size: 12pt;
             }
         }
 
@@ -1287,6 +1310,15 @@ function loadSettings() {
         }
         settings = { ...settings, ...parsed };
     }
+
+    // Set defaults if not already saved
+    if (!settings.desa) settings.desa = 'Kasomalang Kulon';
+    if (!settings.kecamatan) settings.kecamatan = 'Kasomalang';
+    if (!settings.kabupaten) settings.kabupaten = 'Subang';
+    if (!settings.provinsi) settings.provinsi = 'Jawa Barat';
+    if (!settings.kodePos) settings.kodePos = '41281';
+    if (!settings.alamat) settings.alamat = 'Jl. Raya Kasomalang No.01';
+
     document.getElementById('setDesa').value = settings.desa || '';
     document.getElementById('setKecamatan').value = settings.kecamatan || '';
     document.getElementById('setKabupaten').value = settings.kabupaten || '';
@@ -1433,12 +1465,10 @@ function openForm(type) {
 
 function generateNomorSurat() {
     const now = new Date();
-    const bulan = String(now.getMonth() + 1).padStart(2, '0');
     const tahun = now.getFullYear();
     const history = getHistory();
-    const todayStr = now.toISOString().split('T')[0];
-    const todayCount = history.filter(h => h.tanggal === todayStr && h.jenis === currentForm).length + 1;
-    const nomor = String(todayCount).padStart(3, '0');
+    const jenisCount = history.filter(h => h.jenis === currentForm).length + 1;
+    const nomor = String(jenisCount).padStart(3, '0');
 
     const nomorEl = document.getElementById('nomorSuratDisplay');
     if (nomorEl) {
@@ -1447,7 +1477,7 @@ function generateNomorSurat() {
             belumMenikah: 'SKBM', dudaJanda: 'SKDJ', sktm: 'SKTM',
             pindah: 'SKP', kelahiran: 'SKL'
         };
-        nomorEl.textContent = `Nomor Surat: ${nomor}/${jenisCodes[currentForm]}/${bulan}/${tahun}`;
+        nomorEl.textContent = `Nomor Surat: ${nomor} / ${jenisCodes[currentForm]} / ${tahun}`;
     }
 }
 
@@ -1516,10 +1546,14 @@ function getFormHTML(type) {
                 <input type="text" id="alamat" placeholder="Alamat lengkap sesuai KTP">
             </div>
         </div>
-        <div class="form-row single">
+        <div class="form-row">
             <div class="form-group">
-                <label>RT / RW</label>
-                <input type="text" id="rtRw" placeholder="Contoh: RT 03 / RW 01">
+                <label>RT</label>
+                <input type="text" id="rt" placeholder="Contoh: 003">
+            </div>
+            <div class="form-group">
+                <label>RW</label>
+                <input type="text" id="rw" placeholder="Contoh: 006">
             </div>
         </div>
     `;
@@ -1857,7 +1891,8 @@ function getFormData() {
         agama: document.getElementById('agama')?.value || '',
         pekerjaan: document.getElementById('pekerjaan')?.value || '',
         alamat: document.getElementById('alamat')?.value || '',
-        rtRw: document.getElementById('rtRw')?.value || '',
+        rt: document.getElementById('rt')?.value || '',
+        rw: document.getElementById('rw')?.value || '',
         penandatangan: document.getElementById('penandatangan')?.value || 'kades',
     };
 
@@ -1929,12 +1964,10 @@ function getFormData() {
 
 function generateNomorSuratStr() {
     const now = new Date();
-    const bulan = String(now.getMonth() + 1).padStart(2, '0');
     const tahun = now.getFullYear();
     const history = getHistory();
-    const todayStr = now.toISOString().split('T')[0];
-    const todayCount = history.filter(h => h.tanggal === todayStr && h.jenis === currentForm).length + 1;
-    const nomor = String(todayCount).padStart(3, '0');
+    const jenisCount = history.filter(h => h.jenis === currentForm).length + 1;
+    const nomor = String(jenisCount).padStart(3, '0');
 
     const codes = {
         sku: 'SKU', domisili: 'SKD', kematian: 'SKK',
@@ -1942,7 +1975,7 @@ function generateNomorSuratStr() {
         pindah: 'SKP', kelahiran: 'SKL'
     };
 
-    return `${nomor}/${codes[currentForm]}/${bulan}/${tahun}`;
+    return `${nomor} / ${codes[currentForm]} / ${tahun}`;
 }
 
 function tanggalIndonesia(tglStr) {
@@ -1964,16 +1997,18 @@ function generateSuratHTML(data) {
     } else {
         logoSrc = s.logoKades || '';
     }
-    const logoHTML = logoSrc ? `<img src="${logoSrc}" style="width:70px;height:70px;position:absolute;left:0;top:50%;transform:translateY(-50%);">` : '';
+    const logoHTML = logoSrc ? `<div class="kop-logo"><img src="${logoSrc}" alt="Logo"></div>` : '';
 
     // Kop surat
     const kopHTML = `
-        <div class="surat-kop" style="position:relative;padding-left:80px;">
+        <div class="surat-kop">
             ${logoHTML}
-            <div class="kop-title">PEMERINTAH KABUPATEN ${s.kabupaten?.toUpperCase() || '...'}</div>
-            <div class="kop-title">KECAMATAN ${s.kecamatan?.toUpperCase() || '...'}</div>
-            <div class="kop-subtitle">DESA ${s.desa?.toUpperCase() || '...'}</div>
-            <div class="kop-address">${s.alamat || 'Alamat Desa'} Kode Pos ${s.kodePos || '-'}</div>
+            <div class="kop-text">
+                <div class="kop-title">PEMERINTAH KABUPATEN ${s.kabupaten?.toUpperCase() || '...'}</div>
+                <div class="kop-title">KECAMATAN ${s.kecamatan?.toUpperCase() || '...'}</div>
+                <div class="kop-subtitle">DESA ${s.desa?.toUpperCase() || '...'}</div>
+                <div class="kop-address">${s.alamat || 'Alamat Desa'} Kode Pos ${s.kodePos || '-'}</div>
+            </div>
         </div>
     `;
 
@@ -1995,7 +2030,7 @@ function generateSuratHTML(data) {
                         <tr><td>Jenis Kelamin</td><td>:</td><td>${data.jk}</td></tr>
                         <tr><td>Agama</td><td>:</td><td>${data.agama}</td></tr>
                         <tr><td>Pekerjaan</td><td>:</td><td>${data.pekerjaan}</td></tr>
-                        <tr><td>Alamat</td><td>:</td><td>${data.alamat}, RT/RW ${data.rtRw}</td></tr>
+                        <tr><td>Alamat</td><td>:</td><td>${data.alamat} RT ${data.rt} RW ${data.rw} Desa ${s.desa} Kecamatan ${s.kecamatan} Kabupaten ${s.kabupaten}</td></tr>
                     </table>
                     <p style="margin-top:14px;">Bahwa orang tersebut di atas benar-benar memiliki / menjalankan usaha:</p>
                     <table>
@@ -2022,12 +2057,12 @@ function generateSuratHTML(data) {
                         <tr><td>Jenis Kelamin</td><td>:</td><td>${data.jk}</td></tr>
                         <tr><td>Agama</td><td>:</td><td>${data.agama}</td></tr>
                         <tr><td>Pekerjaan</td><td>:</td><td>${data.pekerjaan}</td></tr>
-                        <tr><td>Alamat KTP</td><td>:</td><td>${data.alamat}</td></tr>
+                        <tr><td>Alamat KTP</td><td>:</td><td>${data.alamat} RT ${data.rt} RW ${data.rw} Desa ${s.desa} Kecamatan ${s.kecamatan} Kabupaten ${s.kabupaten}</td></tr>
                     </table>
                     <p style="margin-top:14px;">Bahwa orang tersebut di atas benar-benar berdomisili / bertempat tinggal di:</p>
                     <table>
                         <tr><td>Alamat Domisili</td><td>:</td><td><strong>${data.alamatDomisili}</strong></td></tr>
-                        <tr><td>RT/RW</td><td>:</td><td>${data.rtRw}</td></tr>
+                        <tr><td>RT / RW</td><td>:</td><td>RT ${data.rt} RW ${data.rw}</td></tr>
                         <tr><td>Bertempat Tinggal Sejak</td><td>:</td><td>${data.sejakDomisili || '-'}</td></tr>
                     </table>
                     <p style="margin-top:14px;">Surat Keterangan ini diterbitkan untuk keperluan <strong>${data.keperluanDomisili || '-'}</strong>. Demikian surat keterangan ini dibuat untuk dapat dipergunakan sebagaimana mestinya.</p>
@@ -2050,7 +2085,7 @@ function generateSuratHTML(data) {
                         <tr><td>Jenis Kelamin</td><td>:</td><td>${data.jk}</td></tr>
                         <tr><td>Tempat, Tgl Lahir</td><td>:</td><td>${data.ttl}</td></tr>
                         <tr><td>Agama</td><td>:</td><td>${data.agama}</td></tr>
-                        <tr><td>Alamat</td><td>:</td><td>${data.alamat}</td></tr>
+                        <tr><td>Alamat</td><td>:</td><td>${data.alamat} RT ${data.rt} RW ${data.rw} Desa ${s.desa} Kecamatan ${s.kecamatan} Kabupaten ${s.kabupaten}</td></tr>
                     </table>
                     <p style="margin-top:14px;">Pada:</p>
                     <table>
@@ -2084,7 +2119,7 @@ function generateSuratHTML(data) {
                         <tr><td>Jenis Kelamin</td><td>:</td><td>${data.jk}</td></tr>
                         <tr><td>Agama</td><td>:</td><td>${data.agama}</td></tr>
                         <tr><td>Pekerjaan</td><td>:</td><td>${data.pekerjaan}</td></tr>
-                        <tr><td>Alamat</td><td>:</td><td>${data.alamat}</td></tr>
+                        <tr><td>Alamat</td><td>:</td><td>${data.alamat} RT ${data.rt} RW ${data.rw} Desa ${s.desa} Kecamatan ${s.kecamatan} Kabupaten ${s.kabupaten}</td></tr>
                     </table>
                     <p style="margin-top:14px;">Bahwa orang tersebut di atas berdasarkan pengamatan dan keterangan yang ada adalah benar <strong>${data.statusKawin}</strong>.</p>
                     <p style="margin-top:14px;">Surat Keterangan ini diterbitkan untuk keperluan <strong>${data.keperluanBM || '-'}</strong>. Demikian surat keterangan ini dibuat untuk dapat dipergunakan sebagaimana mestinya.</p>
@@ -2107,7 +2142,7 @@ function generateSuratHTML(data) {
                         <tr><td>Jenis Kelamin</td><td>:</td><td>${data.jk}</td></tr>
                         <tr><td>Agama</td><td>:</td><td>${data.agama}</td></tr>
                         <tr><td>Pekerjaan</td><td>:</td><td>${data.pekerjaan}</td></tr>
-                        <tr><td>Alamat</td><td>:</td><td>${data.alamat}</td></tr>
+                        <tr><td>Alamat</td><td>:</td><td>${data.alamat} RT ${data.rt} RW ${data.rw} Desa ${s.desa} Kecamatan ${s.kecamatan} Kabupaten ${s.kabupaten}</td></tr>
                     </table>
                     <p style="margin-top:14px;">Bahwa orang tersebut di atas adalah benar berstatus sebagai <strong>${data.statusDJ}</strong> karena <strong>${data.sebabCerai || '-'}</strong> ${data.sebabCerai === 'Cerai Mati' ? 'pada tanggal ' + data.tglCerai : 'sejak tanggal ' + data.tglCerai}.</p>
                     <table>
@@ -2133,7 +2168,7 @@ function generateSuratHTML(data) {
                         <tr><td>Jenis Kelamin</td><td>:</td><td>${data.jk}</td></tr>
                         <tr><td>Agama</td><td>:</td><td>${data.agama}</td></tr>
                         <tr><td>Pekerjaan</td><td>:</td><td>${data.pekerjaan}</td></tr>
-                        <tr><td>Alamat</td><td>:</td><td>${data.alamat}</td></tr>
+                        <tr><td>Alamat</td><td>:</td><td>${data.alamat} RT ${data.rt} RW ${data.rw} Desa ${s.desa} Kecamatan ${s.kecamatan} Kabupaten ${s.kabupaten}</td></tr>
                     </table>
                     <table style="margin-top:10px;">
                         <tr><td>Penghasilan/Bulan</td><td>:</td><td><strong>${data.penghasilan}</strong></td></tr>
@@ -2161,7 +2196,7 @@ function generateSuratHTML(data) {
                         <tr><td>Jenis Kelamin</td><td>:</td><td>${data.jk}</td></tr>
                         <tr><td>Agama</td><td>:</td><td>${data.agama}</td></tr>
                         <tr><td>Pekerjaan</td><td>:</td><td>${data.pekerjaan}</td></tr>
-                        <tr><td>Alamat Asal</td><td>:</td><td>${data.alamat}</td></tr>
+                        <tr><td>Alamat Asal</td><td>:</td><td>${data.alamat} RT ${data.rt} RW ${data.rw} Desa ${s.desa} Kecamatan ${s.kecamatan} Kabupaten ${s.kabupaten}</td></tr>
                     </table>
                     <p style="margin-top:14px;">Akan pindah domisili ke:</p>
                     <table>
@@ -2315,7 +2350,10 @@ function printSurat() {
             <title>Cetak Surat</title>
             <style>
                 body { font-family: 'Times New Roman', Times, serif; margin: 0; padding: 20px 40px; font-size: 12pt; line-height: 1.6; }
-                .surat-kop { text-align: center; border-bottom: 3px double #333; padding-bottom: 12px; margin-bottom: 20px; position: relative; }
+                .surat-kop { display: flex; align-items: center; border-bottom: 3px double #333; padding-bottom: 12px; margin-bottom: 20px; }
+                .surat-kop .kop-logo { width: 50px; min-width: 50px; margin-right: 12px; }
+                .surat-kop .kop-logo img { width: 50px; height: 50px; object-fit: contain; }
+                .surat-kop .kop-text { flex: 1; text-align: center; }
                 .surat-kop .kop-title { font-size: 13pt; font-weight: 700; text-transform: uppercase; }
                 .surat-kop .kop-subtitle { font-size: 16pt; font-weight: 800; text-transform: uppercase; margin: 4px 0; }
                 .surat-kop .kop-address { font-size: 10pt; color: #444; }
@@ -2328,7 +2366,7 @@ function printSurat() {
                 .surat-body table td:first-child { width: 180px; font-weight: 600; }
                 .surat-body table td:nth-child(2) { width: 15px; }
                 .surat-footer { margin-top: 40px; text-align: right; font-size: 12pt; }
-                .surat-footer .ttd-area { margin-top: 70px; }
+                .surat-footer .ttd-area { margin-top: 50px; }
                 .surat-footer .ttd-name { font-weight: 700; text-decoration: underline; }
                 .surat-footer .ttd-jabatan { font-size: 10pt; }
                 @media print {
@@ -2356,7 +2394,10 @@ function downloadWord() {
             <title>Surat</title>
             <style>
                 body { font-family: 'Times New Roman', Times, serif; font-size: 12pt; line-height: 1.6; margin: 20px 40px; }
-                .surat-kop { text-align: center; border-bottom: 3px double #333; padding-bottom: 12px; margin-bottom: 20px; position: relative; }
+                .surat-kop { display: flex; align-items: center; border-bottom: 3px double #333; padding-bottom: 12px; margin-bottom: 20px; }
+                .surat-kop .kop-logo { width: 50px; min-width: 50px; margin-right: 12px; }
+                .surat-kop .kop-logo img { width: 50px; height: 50px; object-fit: contain; }
+                .surat-kop .kop-text { flex: 1; text-align: center; }
                 .surat-kop .kop-title { font-size: 13pt; font-weight: 700; text-transform: uppercase; }
                 .surat-kop .kop-subtitle { font-size: 16pt; font-weight: 800; text-transform: uppercase; margin: 4px 0; }
                 .surat-kop .kop-address { font-size: 10pt; color: #444; }
@@ -2369,7 +2410,7 @@ function downloadWord() {
                 .surat-body table td:first-child { width: 180px; font-weight: 600; }
                 .surat-body table td:nth-child(2) { width: 15px; }
                 .surat-footer { margin-top: 40px; text-align: right; font-size: 12pt; }
-                .surat-footer .ttd-area { margin-top: 70px; }
+                .surat-footer .ttd-area { margin-top: 50px; }
                 .surat-footer .ttd-name { font-weight: 700; text-decoration: underline; }
                 .surat-footer .ttd-jabatan { font-size: 10pt; }
             </style>
