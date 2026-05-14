@@ -611,20 +611,20 @@
         }
 
         .surat-footer {
-            margin-top: 25px;
+            margin-top: 45px;
             text-align: right;
             font-family: 'Times New Roman', Times, serif;
             font-size: 11pt;
         }
 
         .surat-footer .ttd-area {
-            margin-top: 35px;
+            margin-top: 50px;
         }
 
         .surat-footer .ttd-name {
             font-weight: 700;
             text-decoration: underline;
-            margin-top: 4px;
+            margin-top: 45px;
         }
 
         .surat-footer .ttd-jabatan {
@@ -1041,6 +1041,10 @@
             <span class="icon">⚙️</span>
             <span>Pengaturan Desa</span>
         </div>
+        <div class="menu-item" onclick="showPage('masa-bakti')">
+            <span class="icon">👥</span>
+            <span>Masa Bakti RT/RW</span>
+        </div>
     </nav>
 </aside>
 
@@ -1269,6 +1273,13 @@
             </div>
         </div>
     </div>
+
+    <!-- PAGE: MASA BAKTI -->
+    <div class="page-section" id="page-masa-bakti">
+        <div class="page-content">
+            <div id="masaBaktiContainer"></div>
+        </div>
+    </div>
 </div>
 
 <!-- PREVIEW OVERLAY -->
@@ -1457,7 +1468,8 @@ function showPage(page) {
         'dashboard': ['Dashboard', 'Beranda'],
         'buat-surat': ['Buat Surat', 'Pembuatan Surat'],
         'riwayat': ['Riwayat Surat', 'Arsip Surat'],
-        'pengaturan': ['Pengaturan', 'Pengaturan Desa']
+        'pengaturan': ['Pengaturan', 'Pengaturan Desa'],
+        'masa-bakti': ['Masa Bakti', 'Masa Bakti RT/RW']
     };
 
     document.getElementById('pageTitle').textContent = titles[page][0];
@@ -1472,6 +1484,7 @@ function showPage(page) {
     });
 
     if (page === 'riwayat') renderHistory();
+    if (page === 'masa-bakti') renderMasaBakti();
     if (page === 'dashboard') updateStats();
 
     // Close sidebar on mobile
@@ -1511,7 +1524,9 @@ function generateNomorSurat() {
     const now = new Date();
     const tahun = now.getFullYear();
     const history = getHistorySync();
-    const jenisCount = history.filter(h => h.jenis === currentForm).length + 1;
+    // Filter by jenis AND tahun yang sama
+    const tahunIni = String(tahun);
+    const jenisCount = history.filter(h => h.jenis === currentForm && h.noSurat?.includes(tahunIni)).length + 1;
     const nomor = String(jenisCount).padStart(3, '0');
 
     const nomorEl = document.getElementById('nomorSuratDisplay');
@@ -2093,7 +2108,8 @@ function generateNomorSuratStr() {
     const now = new Date();
     const tahun = now.getFullYear();
     const history = getHistorySync();
-    const jenisCount = history.filter(h => h.jenis === currentForm).length + 1;
+    const tahunIni = String(tahun);
+    const jenisCount = history.filter(h => h.jenis === currentForm && h.noSurat?.includes(tahunIni)).length + 1;
     const nomor = String(jenisCount).padStart(3, '0');
 
     const codes = {
@@ -2550,24 +2566,28 @@ function printSurat() {
     
     let pageStyle = '';
     let bodyStyle = '';
-    let containerStyle = '';
     
     if (isKematian) {
-        // Landscape 2 columns for kematian
+        // Landscape 2 columns - NO border, more signature space
         pageStyle = `
             @page { size: A4 landscape; margin: 0; }
-            .print-container { 
-                display: grid; 
-                grid-template-columns: 1fr 1fr; 
-                gap: 10mm; 
-                page-break-after: always;
-            }
-            .print-item { 
-                padding: 8mm; 
-                border: 1px solid #ccc;
+            @media print {
+                .print-container { 
+                    display: grid; 
+                    grid-template-columns: 1fr 1fr; 
+                    grid-column: 1 / -1;
+                    width: 100%;
+                    height: 100vh;
+                }
+                .print-item { 
+                    padding: 3mm 4mm; 
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-between;
+                }
             }
         `;
-        bodyStyle = 'margin: 8mm 10mm; font-size: 9pt; line-height: 1.2;';
+        bodyStyle = 'margin: 3mm 4mm; font-size: 7pt; line-height: 1.1;';
     } else {
         pageStyle = `@page { size: A4 portrait; margin: 0; }`;
         bodyStyle = 'margin: 15mm 20mm; font-size: 11pt; line-height: 1.3;';
@@ -2588,30 +2608,30 @@ function printSurat() {
                 @media print {
                     @page { margin: 0; }
                 }
-                .surat-kop { display: flex; align-items: center; border-bottom: 3px double #333; padding-bottom: 6px; margin-bottom: 8px; gap: 4px; }
-                .surat-kop .kop-logo { width: 60px; min-width: 60px; }
-                .surat-kop .kop-logo img { width: 60px; height: 60px; object-fit: contain; }
+                .surat-kop { display: flex; align-items: center; border-bottom: 2px double #333; padding-bottom: 3px; margin-bottom: 4px; gap: 2px; }
+                .surat-kop .kop-logo { width: 45px; min-width: 45px; }
+                .surat-kop .kop-logo img { width: 45px; height: 45px; object-fit: contain; }
                 .surat-kop .kop-text { flex: 1; text-align: center; }
-                .surat-kop .kop-title { font-size: 9pt; font-weight: 700; text-transform: uppercase; }
-                .surat-kop .kop-subtitle { font-size: 12pt; font-weight: 800; text-transform: uppercase; margin: 1px 0; }
-                .surat-kop .kop-address { font-size: 8pt; color: #444; }
-                .surat-title { text-align: center; margin: 8px 0; }
-                .surat-title h2 { font-size: 9pt; text-decoration: underline; text-transform: uppercase; font-weight: 700; }
-                .surat-title p { font-size: 8pt; margin-top: 1px; }
-                .surat-body { font-size: 9pt; line-height: 1.2; text-align: justify; }
+                .surat-kop .kop-title { font-size: 7pt; font-weight: 700; text-transform: uppercase; }
+                .surat-kop .kop-subtitle { font-size: 9pt; font-weight: 800; text-transform: uppercase; margin: 0; }
+                .surat-kop .kop-address { font-size: 6pt; color: #444; }
+                .surat-title { text-align: center; margin: 4px 0; }
+                .surat-title h2 { font-size: 7pt; text-decoration: underline; text-transform: uppercase; font-weight: 700; margin: 0; }
+                .surat-title p { font-size: 6pt; margin: 0; }
+                .surat-body { font-size: 7pt; line-height: 1.1; text-align: justify; }
                 .surat-body table { width: 100%; margin: 1px 0; border-collapse: collapse; }
-                .surat-body table td { padding: 0 4px; vertical-align: top; font-size: 9pt; line-height: 1.2; }
-                .surat-body table td:first-child { width: 100px; font-weight: 600; }
-                .surat-body table td:nth-child(2) { width: 8px; }
-                .surat-footer { margin-top: 15px; text-align: right; font-size: 9pt; }
-                .surat-footer .ttd-area { margin-top: 15px; }
-                .surat-footer .ttd-name { font-weight: 700; text-decoration: underline; }
-                .surat-footer .ttd-jabatan { font-size: 8pt; }
+                .surat-body table td { padding: 0 2px; vertical-align: top; font-size: 7pt; line-height: 1.1; }
+                .surat-body table td:first-child { width: 70px; font-weight: 600; }
+                .surat-body table td:nth-child(2) { width: 4px; }
+                .surat-footer { margin-top: 8px; text-align: right; font-size: 7pt; flex-grow: 1; display: flex; flex-direction: column; justify-content: flex-end; }
+                .surat-footer .ttd-area { margin-top: 35px; }
+                .surat-footer .ttd-name { font-weight: 700; text-decoration: underline; margin-top: 35px; }
+                .surat-footer .ttd-jabatan { font-size: 6pt; }
                 ${pageStyle}
             </style>
         </head>
         <body>
-            ${isKematian ? '<div class="print-container"><div class="print-item">' + printContent + '</div><div class="print-item"></div></div>' : printContent}
+            ${isKematian ? '<div class="print-container"><div class="print-item"></div><div class="print-item">' + printContent + '</div></div>' : printContent}
             <script>
                 window.onload = function() { window.print(); window.close(); }
             <\/script>
@@ -2854,6 +2874,78 @@ window.onload = async function() {
         showToast('Silakan atur data desa terlebih dahulu di menu Pengaturan', 'info');
     }
 };
+
+// ==========================================
+// MASA BAKTI RT/RW
+// ==========================================
+const masaBaktiData = [
+    { dusun: 'Dusun 1', rw: '01', rt: ['01','02','03','04','05','06'],RW: '01', totalRT: 6 },
+    { dusun: 'Dusun 1', rw: '02', rt: ['01','02','03','04','05','06'],RW: '02', totalRT: 6 },
+    { dusun: 'Dusun 2', rw: '03', rt: ['01','02','03','04'],RW: '03', totalRT: 4 },
+    { dusun: 'Dusun 3', rw: '04', rt: ['01','02','03','04'],RW: '04', totalRT: 4 },
+    { dusun: 'Dusun 3', rw: '05', rt: ['01','02'],RW: '05', totalRT: 2 },
+    { dusun: 'Dusun 2', rw: '06', rt: ['01','02','03'],RW: '06', totalRT: 3 },
+    { dusun: 'Dusun 3', rw: '07', rt: ['01','02','03'],RW: '07', totalRT: 3 }
+];
+
+function hitungSisaHari(awal, akhir) {
+    const now = new Date();
+    const start = new Date(awal);
+    const end = new Date(akhir);
+    if (now > end) return { sisa: 0, status: 'expired', warna: '#e74c3c' };
+    if (now < start) { const days = Math.ceil((start - now) / (1000*60*60*24)); return { sisa: days, status: 'pending', warna: '#f39c12' }; }
+    const days = Math.ceil((end - now) / (1000*60*60*24));
+    const tahun = Math.floor(days / 365);
+    const bulan = Math.floor((days % 365) / 30);
+    return { sisa: `${tahun} thn ${bulan} bln`, status: days > 90 ? 'active' : 'expired-soon', warna: days > 90 ? '#27ae60' : '#f39c12' };
+}
+
+function renderMasaBakti() {
+    const container = document.getElementById('masaBaktiContainer');
+    let html = '<h3 style="margin-bottom:16px;font-size:16px;">📅 Data Masa Bakti RT/RW</h3>';
+    
+    const dusunGroups = {};
+    masaBaktiData.forEach(item => {
+        if (!dusunGroups[item.dusun]) dusunGroups[item.dusun] = [];
+        dusunGroups[item.dusun].push(item);
+    });
+
+    for (const [dusun, items] of Object.entries(dusunGroups)) {
+        html += `<div style="background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:16px;overflow:hidden;">
+            <div style="background:var(--primary);color:white;padding:12px 16px;font-weight:700;font-size:14px;">📍 ${dusun}</div>
+            <div style="padding:12px;">`;
+        
+        items.forEach(item => {
+            const today = new Date();
+            const awal = new Date(today.getFullYear() + '-01-01');
+            const akhir = new Date(today.getFullYear() + 6 + '-12-31');
+            const { sisa, status, warna } = hitungSisaHari(awal, akhir);
+            
+            html += `<div style="background:#f8f9fa;border-radius:8px;padding:12px;margin-bottom:10px;border-left:4px solid var(--primary);">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                    <span style="font-weight:700;font-size:14px;color:var(--primary);">RW ${item.rw}</span>
+                    <span style="background:${warna};color:white;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:600;">${status === 'expired' ? 'Habis' : status === 'pending' ? 'Akan Datang' : sisa + ' hari lagi'}</span>
+                </div>
+                <div style="font-size:12px;color:var(--text-light);">
+                    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;">`;
+            
+            item.rt.forEach((rt, idx) => {
+                const nama = 'Nama Ketua RT ' + item.rw + '/' + rt;
+                html += `<div style="background:white;padding:8px;border-radius:6px;border:1px solid var(--border);">
+                    <div style="font-weight:600;color:var(--text);font-size:12px;">RT ${item.rw}/${rt}</div>
+                    <div style="font-size:11px;color:var(--text-light);">${nama}</div>
+                    <div style="font-size:10px;color:var(--text-light);margin-top:2px;">2025 - 2031</div>
+                </div>`;
+            });
+            
+            html += `</div></div></div>`;
+        });
+        
+        html += `</div></div>`;
+    }
+
+    container.innerHTML = html;
+}
 </script>
 
 </body>
