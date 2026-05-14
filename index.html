@@ -955,9 +955,27 @@
             font-size: 28px;
             color: var(--text-light);
         }
+
+        .logo-uploads-row {
+            display: flex;
+            gap: 24px;
+            justify-content: center;
+        }
+
+        .logo-upload-item {
+            text-align: center;
+        }
+
+        .logo-upload-item .logo-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
     </style>
 </head>
 <body>
+
 
 <!-- SIDEBAR -->
 <aside class="sidebar" id="sidebar">
@@ -1102,7 +1120,7 @@
                 <div class="form-actions" id="formActions" style="display:none;">
                     <button class="btn btn-outline" onclick="resetForm()">🔄 Reset</button>
                     <button class="btn btn-primary" onclick="previewSurat()">👁️ Preview</button>
-                    <button class="btn btn-success" onclick="saveAndPrint()">💾 Simpan & Print</button>
+                    <button class="btn btn-success btn-lg" onclick="saveAndPrint()">💾 Simpan & Print</button>
                 </div>
             </div>
         </div>
@@ -1188,12 +1206,25 @@
                         </div>
                         <hr style="margin:16px 0;border:none;border-top:1px solid var(--border);">
                         <div class="form-group" style="margin-bottom:14px;">
-                            <label>Upload Logo Desa</label>
-                            <div class="logo-upload-area" onclick="document.getElementById('logoInput').click()">
-                                <span class="placeholder" id="logoPreview">🏛️</span>
+                            <label>Upload Logo</label>
+                            <div class="logo-uploads-row">
+                                <div class="logo-upload-item">
+                                    <div class="logo-label">Logo Kepala Desa (Garuda)</div>
+                                    <div class="logo-upload-area" onclick="document.getElementById('logoKadesInput').click()">
+                                        <span class="placeholder" id="logoKadesPreview">🦅</span>
+                                    </div>
+                                    <input type="file" id="logoKadesInput" accept="image/*" style="display:none" onchange="handleLogoKades(event)">
+                                    <button class="btn btn-outline" onclick="removeLogoKades()" style="font-size:11px;padding:6px 12px;margin-top:6px;">Hapus</button>
+                                </div>
+                                <div class="logo-upload-item">
+                                    <div class="logo-label">Logo Sekretaris Desa (Benteng Pancasila)</div>
+                                    <div class="logo-upload-area" onclick="document.getElementById('logoSekdesInput').click()">
+                                        <span class="placeholder" id="logoSekdesPreview">🏛️</span>
+                                    </div>
+                                    <input type="file" id="logoSekdesInput" accept="image/*" style="display:none" onchange="handleLogoSekdes(event)">
+                                    <button class="btn btn-outline" onclick="removeLogoSekdes()" style="font-size:11px;padding:6px 12px;margin-top:6px;">Hapus</button>
+                                </div>
                             </div>
-                            <input type="file" id="logoInput" accept="image/*" style="display:none" onchange="handleLogo(event)">
-                            <button class="btn btn-outline" onclick="removeLogo()" style="font-size:11px;padding:6px 12px;margin-top:6px;">Hapus Logo</button>
                         </div>
                         <button class="btn btn-primary" onclick="saveSettings()" style="margin-top:8px;">💾 Simpan Pengaturan</button>
                     </div>
@@ -1223,6 +1254,7 @@
 <!-- TOAST CONTAINER -->
 <div class="toast-container" id="toastContainer"></div>
 
+
 <script>
 // ==========================================
 // DATA & STATE
@@ -1239,14 +1271,21 @@ let settings = {
     nipKades: '',
     sekdes: '',
     nipSekdes: '',
-    logo: ''
+    logoKades: '',
+    logoSekdes: ''
 };
 
 // Load settings from localStorage
 function loadSettings() {
     const saved = localStorage.getItem('sisdes_settings');
     if (saved) {
-        settings = JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+        // Migrate old single logo to logoKades if needed
+        if (parsed.logo && !parsed.logoKades) {
+            parsed.logoKades = parsed.logo;
+            delete parsed.logo;
+        }
+        settings = { ...settings, ...parsed };
     }
     document.getElementById('setDesa').value = settings.desa || '';
     document.getElementById('setKecamatan').value = settings.kecamatan || '';
@@ -1259,8 +1298,11 @@ function loadSettings() {
     document.getElementById('setSekdes').value = settings.sekdes || '';
     document.getElementById('setNipSekdes').value = settings.nipSekdes || '';
 
-    if (settings.logo) {
-        document.getElementById('logoPreview').innerHTML = `<img src="${settings.logo}" alt="Logo">`;
+    if (settings.logoKades) {
+        document.getElementById('logoKadesPreview').innerHTML = `<img src="${settings.logoKades}" alt="Logo Kades">`;
+    }
+    if (settings.logoSekdes) {
+        document.getElementById('logoSekdesPreview').innerHTML = `<img src="${settings.logoSekdes}" alt="Logo Sekdes">`;
     }
 
     updateTopbar();
@@ -1283,21 +1325,38 @@ function saveSettings() {
     showToast('Pengaturan berhasil disimpan!', 'success');
 }
 
-function handleLogo(event) {
+function handleLogoKades(event) {
     const file = event.target.files[0];
     if (file) {
         const reader = new FileReader();
         reader.onload = function(e) {
-            settings.logo = e.target.result;
-            document.getElementById('logoPreview').innerHTML = `<img src="${e.target.result}" alt="Logo">`;
+            settings.logoKades = e.target.result;
+            document.getElementById('logoKadesPreview').innerHTML = `<img src="${e.target.result}" alt="Logo Kades">`;
         };
         reader.readAsDataURL(file);
     }
 }
 
-function removeLogo() {
-    settings.logo = '';
-    document.getElementById('logoPreview').innerHTML = '<span class="placeholder">🏛️</span>';
+function removeLogoKades() {
+    settings.logoKades = '';
+    document.getElementById('logoKadesPreview').innerHTML = '<span class="placeholder">🦅</span>';
+}
+
+function handleLogoSekdes(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            settings.logoSekdes = e.target.result;
+            document.getElementById('logoSekdesPreview').innerHTML = `<img src="${e.target.result}" alt="Logo Sekdes">`;
+        };
+        reader.readAsDataURL(file);
+    }
+}
+
+function removeLogoSekdes() {
+    settings.logoSekdes = '';
+    document.getElementById('logoSekdesPreview').innerHTML = '<span class="placeholder">🏛️</span>';
 }
 
 function updateTopbar() {
@@ -1457,14 +1516,24 @@ function getFormHTML(type) {
                 <input type="text" id="alamat" placeholder="Alamat lengkap sesuai KTP">
             </div>
         </div>
-        <div class="form-row">
+        <div class="form-row single">
             <div class="form-group">
                 <label>RT / RW</label>
                 <input type="text" id="rtRw" placeholder="Contoh: RT 03 / RW 01">
             </div>
+        </div>
+    `;
+
+    // Penandatangan section (added to ALL surat types)
+    const penandatanganSection = `
+        <div class="form-section-title">✍️ Penandatangan</div>
+        <div class="form-row single">
             <div class="form-group">
-                <label>No. Telepon / HP</label>
-                <input type="text" id="telp" placeholder="08xxxxxxxxxx">
+                <label>Ditandatangani oleh <span class="req">*</span></label>
+                <select id="penandatangan">
+                    <option value="kades">Kepala Desa</option>
+                    <option value="sekdes">Sekretaris Desa (a.n Kepala Desa)</option>
+                </select>
             </div>
         </div>
     `;
@@ -1483,17 +1552,6 @@ function getFormHTML(type) {
                     <div class="form-group">
                         <label>Alamat Usaha</label>
                         <input type="text" id="alamatUsaha" placeholder="Jika berbeda dengan alamat domisili">
-                    </div>
-                </div>
-
-                <div class="form-section-title">✍️ Penandatangan</div>
-                <div class="form-row single">
-                    <div class="form-group">
-                        <label>Ditandatangani oleh <span class="req">*</span></label>
-                        <select id="penandatangan">
-                            <option value="kades">Kepala Desa</option>
-                            <option value="sekdes">Sekretaris Desa (a.n Kepala Desa)</option>
-                        </select>
                     </div>
                 </div>
             `;
@@ -1781,8 +1839,9 @@ function getFormHTML(type) {
             break;
     }
 
-    return common + extra;
+    return common + extra + penandatanganSection;
 }
+
 
 // ==========================================
 // SURAT GENERATION
@@ -1799,14 +1858,13 @@ function getFormData() {
         pekerjaan: document.getElementById('pekerjaan')?.value || '',
         alamat: document.getElementById('alamat')?.value || '',
         rtRw: document.getElementById('rtRw')?.value || '',
-        telp: document.getElementById('telp')?.value || '',
+        penandatangan: document.getElementById('penandatangan')?.value || 'kades',
     };
 
     // Extra fields based on type
     if (currentForm === 'sku') {
         data.jenisUsaha = document.getElementById('jenisUsaha')?.value || '';
         data.alamatUsaha = document.getElementById('alamatUsaha')?.value || data.alamat;
-        data.penandatangan = document.getElementById('penandatangan')?.value || 'kades';
     }
     if (currentForm === 'domisili') {
         data.alamatDomisili = document.getElementById('alamatDomisili')?.value || data.alamat;
@@ -1899,8 +1957,14 @@ function generateSuratHTML(data) {
     const noSurat = generateNomorSuratStr();
     const tgl = tanggalIndonesia(data.tglSurat);
 
-    // Logo HTML
-    const logoHTML = s.logo ? `<img src="${s.logo}" style="width:70px;height:70px;position:absolute;left:0;top:50%;transform:translateY(-50%);">` : '';
+    // Logo HTML - choose based on penandatangan
+    let logoSrc = '';
+    if (data.penandatangan === 'sekdes') {
+        logoSrc = s.logoSekdes || '';
+    } else {
+        logoSrc = s.logoKades || '';
+    }
+    const logoHTML = logoSrc ? `<img src="${logoSrc}" style="width:70px;height:70px;position:absolute;left:0;top:50%;transform:translateY(-50%);">` : '';
 
     // Kop surat
     const kopHTML = `
@@ -2144,9 +2208,9 @@ function generateSuratHTML(data) {
             break;
     }
 
-    // TTD
+    // TTD - works for ALL surat types based on penandatangan
     let ttdHTML = '';
-    if (currentForm === 'sku' && data.penandatangan === 'sekdes') {
+    if (data.penandatangan === 'sekdes') {
         ttdHTML = `
             <div class="surat-footer">
                 <p>${s.desa || '...'}, ${tgl}</p>
@@ -2173,6 +2237,7 @@ function generateSuratHTML(data) {
 
     return kopHTML + bodyHTML + ttdHTML;
 }
+
 
 // ==========================================
 // PREVIEW, SAVE, PRINT, DOWNLOAD
