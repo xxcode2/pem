@@ -1629,35 +1629,52 @@ function getFormHTML(type) {
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label>Tanggal Meninggal <span class="req">*</span></label>
-                        <input type="date" id="tglMeninggal">
+                        <label>Hari Meninggal <span class="req">*</span></label>
+                        <input type="text" id="hariMeninggal" placeholder="Contoh: Kamis">
                     </div>
                     <div class="form-group">
-                        <label>Waktu Meninggal</label>
-                        <input type="time" id="waktuMeninggal">
+                        <label>Tanggal Meninggal <span class="req">*</span></label>
+                        <input type="date" id="tglMeninggal">
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
+                        <label>Waktu Meninggal</label>
+                        <input type="time" id="waktuMeninggal">
+                    </div>
+                    <div class="form-group">
                         <label>Tempat Meninggal <span class="req">*</span></label>
                         <input type="text" id="tempatMeninggal" placeholder="Contoh: Rumah, RS, dll">
                     </div>
+                </div>
+                <div class="form-row single">
                     <div class="form-group">
                         <label>Penyebab Kematian</label>
                         <input type="text" id="penyebabMeninggal" placeholder="Contoh: Sakit, kecelakaan">
                     </div>
                 </div>
-                <div class="form-row single">
+                <div class="form-section-title">👥 Data Pelapor</div>
+                <div class="form-row">
                     <div class="form-group">
                         <label>Nama Pelapor / Keluarga <span class="req">*</span></label>
                         <input type="text" id="namaPelapor" placeholder="Nama pelapor">
                     </div>
+                    <div class="form-group">
+                        <label>Tanggal Lahir / Umur Pelapor</label>
+                        <input type="text" id="tglLahirPelapor" placeholder="Contoh: 12 Mei 1985 / 38 Tahun">
+                    </div>
                 </div>
                 <div class="form-row">
+                    <div class="form-group">
+                        <label>Pekerjaan Pelapor</label>
+                        <input type="text" id="pekerjaanPelapor" placeholder="Contoh: Petani, Wiraswasta">
+                    </div>
                     <div class="form-group">
                         <label>Hubungan dengan Almarhum</label>
                         <input type="text" id="hubPelapor" placeholder="Contoh: Anak, Istri, Saudara">
                     </div>
+                </div>
+                <div class="form-row single">
                     <div class="form-group">
                         <label>Alamat Pelapor</label>
                         <input type="text" id="alamatPelapor" placeholder="Alamat pelapor">
@@ -1910,11 +1927,14 @@ function getFormData() {
     if (currentForm === 'kematian') {
         data.namaAlm = document.getElementById('namaAlm')?.value || '';
         data.nikAlm = document.getElementById('nikAlm')?.value || '';
+        data.hariMeninggal = document.getElementById('hariMeninggal')?.value || '';
         data.tglMeninggal = document.getElementById('tglMeninggal')?.value || '';
         data.waktuMeninggal = document.getElementById('waktuMeninggal')?.value || '';
         data.tempatMeninggal = document.getElementById('tempatMeninggal')?.value || '';
         data.penyebabMeninggal = document.getElementById('penyebabMeninggal')?.value || '';
         data.namaPelapor = document.getElementById('namaPelapor')?.value || '';
+        data.tglLahirPelapor = document.getElementById('tglLahirPelapor')?.value || '';
+        data.pekerjaanPelapor = document.getElementById('pekerjaanPelapor')?.value || '';
         data.hubPelapor = document.getElementById('hubPelapor')?.value || '';
         data.alamatPelapor = document.getElementById('alamatPelapor')?.value || '';
     }
@@ -2073,34 +2093,46 @@ function generateSuratHTML(data) {
 
         case 'kematian':
             bodyHTML = `
-                <div class="surat-title">
-                    <h2>Surat Keterangan Kematian</h2>
-                    <p>Nomor: ${noSurat}</p>
-                </div>
-                <div class="surat-body">
-                    <p style="margin-bottom:12px;">Yang bertanda tangan di bawah ini, Kepala Desa ${s.desa || '...'}, Kecamatan ${s.kecamatan || '...'}, Kabupaten ${s.kabupaten || '...'}, menerangkan bahwa:</p>
-                    <p style="margin-bottom:12px;">Telah meninggal dunia:</p>
+                <div class="surat-body" style="font-family:'Times New Roman',Times,serif;font-size:12pt;line-height:1.6;">
+                    <table style="margin-bottom:16px;">
+                        <tr><td style="width:200px;">Pemerintah/Kota/Kab</td><td style="width:15px;">:</td><td>${s.kabupaten || '...'}</td></tr>
+                        <tr><td>Kecamatan</td><td>:</td><td>${s.kecamatan || '...'}</td></tr>
+                        <tr><td>Desa/Kelurahan</td><td>:</td><td>${s.desa || '...'}</td></tr>
+                    </table>
+
+                    <div style="text-align:center;margin:24px 0 16px;">
+                        <h2 style="font-size:14pt;text-decoration:underline;text-transform:uppercase;font-weight:700;letter-spacing:1px;margin:0;">SURAT KETERANGAN KEMATIAN</h2>
+                        <p style="font-size:11pt;margin-top:4px;">Nomor: ${noSurat}</p>
+                    </div>
+
+                    <p style="margin-bottom:14px;">Yang bertanda tangan dibawah ini menerangkan</p>
+
                     <table>
-                        <tr><td>Nama Almarhum/ah</td><td>:</td><td><strong>${data.namaAlm}</strong></td></tr>
-                        <tr><td>NIK</td><td>:</td><td>${data.nikAlm}</td></tr>
+                        <tr><td style="width:200px;">Nama</td><td style="width:15px;">:</td><td><strong>${data.namaAlm || data.nama}</strong></td></tr>
                         <tr><td>Jenis Kelamin</td><td>:</td><td>${data.jk}</td></tr>
-                        <tr><td>Tempat, Tgl Lahir</td><td>:</td><td>${data.ttl}</td></tr>
                         <tr><td>Agama</td><td>:</td><td>${data.agama}</td></tr>
-                        <tr><td>Alamat</td><td>:</td><td>${data.alamat} RT ${data.rt} RW ${data.rw} Desa ${s.desa} Kecamatan ${s.kecamatan} Kabupaten ${s.kabupaten}</td></tr>
+                        <tr><td>Tempat/Tanggal Lahir</td><td>:</td><td>${data.ttl}</td></tr>
+                        <tr><td>Pekerjaan</td><td>:</td><td>${data.pekerjaan}</td></tr>
+                        <tr><td>Alamat</td><td>:</td><td>${data.alamat} RT ${data.rt} RW ${data.rw} Kec. ${s.kecamatan} Kab. ${s.kabupaten}</td></tr>
                     </table>
-                    <p style="margin-top:14px;">Pada:</p>
+
+                    <p style="margin-top:18px;">Telah meninggal dunia <span style="text-decoration:underline;">pada</span> :</p>
                     <table>
-                        <tr><td>Hari/Tanggal</td><td>:</td><td>${tanggalIndonesia(data.tglMeninggal)}</td></tr>
-                        <tr><td>Waktu</td><td>:</td><td>${data.waktuMeninggal || '-'}</td></tr>
-                        <tr><td>Tempat</td><td>:</td><td>${data.tempatMeninggal}</td></tr>
-                        <tr><td>Penyebab</td><td>:</td><td>${data.penyebabMeninggal || '-'}</td></tr>
+                        <tr><td style="width:200px;">Hari</td><td style="width:15px;">:</td><td>${data.hariMeninggal || '-'}</td></tr>
+                        <tr><td>Tanggal</td><td>:</td><td>${tanggalIndonesia(data.tglMeninggal)}</td></tr>
+                        <tr><td>Bertempat di</td><td>:</td><td>${data.tempatMeninggal}</td></tr>
+                        <tr><td>Penyebab Kematian</td><td>:</td><td>${data.penyebabMeninggal || '-'}</td></tr>
                     </table>
-                    <p style="margin-top:14px;">Demikian surat keterangan kematian ini dibuat untuk dapat dipergunakan sebagaimana mestinya.</p>
-                </div>
-                <div class="surat-footer">
-                    <p>Yang melaporkan:</p>
-                    <p><strong>${data.namaPelapor}</strong></p>
-                    <p style="font-size:11px;">Hubungan: ${data.hubPelapor} | ${data.alamatPelapor || data.alamat}</p>
+
+                    <p style="margin-top:18px;">Surat Keterangan ini dibuat berdasarkan keterangan Pelapor :</p>
+                    <table>
+                        <tr><td style="width:200px;">Nama Lengkap</td><td style="width:15px;">:</td><td><strong>${data.namaPelapor}</strong></td></tr>
+                        <tr><td>Tanggal Lahir/Umur</td><td>:</td><td>${data.tglLahirPelapor || '-'}</td></tr>
+                        <tr><td>Pekerjaan</td><td>:</td><td>${data.pekerjaanPelapor || '-'}</td></tr>
+                        <tr><td>Alamat</td><td>:</td><td>${data.alamatPelapor || data.alamat} Kec. ${s.kecamatan} Kab. ${s.kabupaten}</td></tr>
+                    </table>
+
+                    <p style="margin-top:18px;">Hubungan pelapor dengan yang meninggal adalah : <strong>${data.hubPelapor || '-'}</strong></p>
                 </div>
             `;
             break;
@@ -2271,6 +2303,11 @@ function generateSuratHTML(data) {
         `;
     }
 
+    // For kematian, skip kopHTML (uses its own simple header format)
+    if (currentForm === 'kematian') {
+        return bodyHTML + ttdHTML;
+    }
+
     return kopHTML + bodyHTML + ttdHTML;
 }
 
@@ -2343,6 +2380,8 @@ function saveAndPrint() {
 
 function printSurat() {
     const printContent = document.getElementById('previewContent').innerHTML;
+    const isKematian = currentForm === 'kematian';
+    const pageOrientation = isKematian ? '@page { size: landscape; }' : '@page { size: portrait; }';
     const printWindow = window.open('', '_blank');
     printWindow.document.write(`
         <!DOCTYPE html>
@@ -2370,6 +2409,7 @@ function printSurat() {
                 .surat-footer .ttd-area { margin-top: 50px; }
                 .surat-footer .ttd-name { font-weight: 700; text-decoration: underline; }
                 .surat-footer .ttd-jabatan { font-size: 10pt; }
+                ${pageOrientation}
                 @media print {
                     body { padding: 15mm 20mm; }
                 }
