@@ -1299,17 +1299,30 @@ let settings = {
     logoSekdes: ''
 };
 
-// Load settings from localStorage
-function loadSettings() {
-    const saved = localStorage.getItem('sisdes_settings');
-    if (saved) {
-        const parsed = JSON.parse(saved);
-        // Migrate old single logo to logoKades if needed
-        if (parsed.logo && !parsed.logoKades) {
-            parsed.logoKades = parsed.logo;
-            delete parsed.logo;
+// Load settings from API with localStorage fallback
+async function loadSettings() {
+    try {
+        const response = await fetch('/api/settings');
+        if (response.ok) {
+            const data = await response.json();
+            settings = { ...settings, ...data };
+            // Also cache in localStorage as backup
+            localStorage.setItem('sisdes_settings', JSON.stringify(settings));
+        } else {
+            throw new Error('API returned ' + response.status);
         }
-        settings = { ...settings, ...parsed };
+    } catch (err) {
+        console.warn('Failed to load settings from API, using localStorage fallback:', err);
+        const saved = localStorage.getItem('sisdes_settings');
+        if (saved) {
+            const parsed = JSON.parse(saved);
+            // Migrate old single logo to logoKades if needed
+            if (parsed.logo && !parsed.logoKades) {
+                parsed.logoKades = parsed.logo;
+                delete parsed.logo;
+            }
+            settings = { ...settings, ...parsed };
+        }
     }
 
     // Set defaults if not already saved
@@ -1341,7 +1354,7 @@ function loadSettings() {
     updateTopbar();
 }
 
-function saveSettings() {
+async function saveSettings() {
     settings.desa = document.getElementById('setDesa').value;
     settings.kecamatan = document.getElementById('setKecamatan').value;
     settings.kabupaten = document.getElementById('setKabupaten').value;
@@ -1353,9 +1366,26 @@ function saveSettings() {
     settings.sekdes = document.getElementById('setSekdes').value;
     settings.nipSekdes = document.getElementById('setNipSekdes').value;
 
+    // Save to localStorage as backup
     localStorage.setItem('sisdes_settings', JSON.stringify(settings));
+
+    try {
+        const response = await fetch('/api/settings', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(settings)
+        });
+        if (response.ok) {
+            showToast('Pengaturan berhasil disimpan!', 'success');
+        } else {
+            throw new Error('API returned ' + response.status);
+        }
+    } catch (err) {
+        console.warn('Failed to save settings to API, saved to localStorage only:', err);
+        showToast('Pengaturan disimpan (offline mode)', 'info');
+    }
+
     updateTopbar();
-    showToast('Pengaturan berhasil disimpan!', 'success');
 }
 
 function handleLogoKades(event) {
@@ -1467,7 +1497,7 @@ function openForm(type) {
 function generateNomorSurat() {
     const now = new Date();
     const tahun = now.getFullYear();
-    const history = getHistory();
+    const history = getHistorySync();
     const jenisCount = history.filter(h => h.jenis === currentForm).length + 1;
     const nomor = String(jenisCount).padStart(3, '0');
 
@@ -2049,7 +2079,7 @@ function getFormData() {
 function generateNomorSuratStr() {
     const now = new Date();
     const tahun = now.getFullYear();
-    const history = getHistory();
+    const history = getHistorySync();
     const jenisCount = history.filter(h => h.jenis === currentForm).length + 1;
     const nomor = String(jenisCount).padStart(3, '0');
 
@@ -2401,8 +2431,8 @@ function closePreview() {
     document.getElementById('previewOverlay').classList.remove('active');
 }
 
-function saveSuratToHistory(data) {
-    const history = getHistory();
+async function saveSuratToHistory(data) {
+    const history = await getHistory();
     const record = {
         id: Date.now(),
         tanggal: data.tglSurat,
@@ -2415,17 +2445,61 @@ function saveSuratToHistory(data) {
     };
     history.unshift(record);
     localStorage.setItem('sisdes_history', JSON.stringify(history));
+
+    try {
+        const response = await fetch('/api/surat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                tanggal: record.tanggal,
+                jenis: record.jenis,
+                nama: record.nama,
+                nik: record.nik,
+                noSurat: record.noSurat,
+                data: record.data
+            })
+        });
+        if (response.ok) {
+            const result = await response.json();
+            record.id = result.id;
+            _historyCache = null;
+        }
+    } catch (err) {
+        console.warn('Failed to save surat to API, saved to localStorage only:', err);
+    }
+
     updateHistoryCount();
     updateStats();
     return record;
 }
 
-function getHistory() {
+let _historyCache = null;
+
+async function getHistory() {
+    try {
+        const response = await fetch('/api/surat');
+        if (response.ok) {
+            const data = await response.json();
+            _historyCache = data;
+            localStorage.setItem('sisdes_history', JSON.stringify(data));
+            return data;
+        }
+        throw new Error('API returned ' + response.status);
+    } catch (err) {
+        console.warn('Failed to load history from API, using localStorage fallback:', err);
+        if (_historyCache) return _historyCache;
+        const saved = localStorage.getItem('sisdes_history');
+        return saved ? JSON.parse(saved) : [];
+    }
+}
+
+function getHistorySync() {
+    if (_historyCache) return _historyCache;
     const saved = localStorage.getItem('sisdes_history');
     return saved ? JSON.parse(saved) : [];
 }
 
-function saveAndPrint() {
+async function saveAndPrint() {
     const data = getFormData();
     if (currentForm === 'kematian') {
         if (!data.namaAlm) {
@@ -2442,7 +2516,7 @@ function saveAndPrint() {
     }
 
     // Save to history
-    saveSuratToHistory(data);
+    await saveSuratToHistory(data);
 
     // Show preview
     const html = generateSuratHTML(data);
@@ -2549,12 +2623,13 @@ function downloadWord() {
 // ==========================================
 // HISTORY
 // ==========================================
-function renderHistory() {
-    const history = getHistory();
+async function renderHistory() {
+    const container = document.getElementById('historyTableBody');
+    container.innerHTML = '<div class="empty-state"><div class="icon">...</div><h3>Memuat...</h3></div>';
+
+    const history = await getHistory();
     const search = document.getElementById('searchInput')?.value?.toLowerCase() || '';
     const filtered = history.filter(h => h.nama.toLowerCase().includes(search));
-
-    const container = document.getElementById('historyTableBody');
 
     if (filtered.length === 0) {
         container.innerHTML = `
@@ -2612,8 +2687,8 @@ function renderHistory() {
     `;
 }
 
-function reprintSurat(id) {
-    const history = getHistory();
+async function reprintSurat(id) {
+    const history = await getHistory();
     const record = history.find(h => h.id === id);
     if (record) {
         currentForm = record.jenis;
@@ -2624,8 +2699,8 @@ function reprintSurat(id) {
     }
 }
 
-function viewHistory(id) {
-    const history = getHistory();
+async function viewHistory(id) {
+    const history = await getHistory();
     const record = history.find(h => h.id === id);
     if (record) {
         currentForm = record.jenis;
@@ -2635,11 +2710,19 @@ function viewHistory(id) {
     }
 }
 
-function deleteHistory(id) {
+async function deleteHistory(id) {
     if (confirm('Yakin ingin menghapus surat ini?')) {
-        let history = getHistory();
+        let history = await getHistory();
         history = history.filter(h => h.id !== id);
         localStorage.setItem('sisdes_history', JSON.stringify(history));
+
+        try {
+            await fetch(`/api/surat?id=${id}`, { method: 'DELETE' });
+        } catch (err) {
+            console.warn('Failed to delete from API:', err);
+        }
+
+        _historyCache = null;
         renderHistory();
         updateHistoryCount();
         updateStats();
@@ -2647,9 +2730,17 @@ function deleteHistory(id) {
     }
 }
 
-function clearHistory() {
+async function clearHistory() {
     if (confirm('Yakin ingin menghapus SEMUA riwayat surat?')) {
         localStorage.removeItem('sisdes_history');
+
+        try {
+            await fetch('/api/surat?all=true', { method: 'DELETE' });
+        } catch (err) {
+            console.warn('Failed to clear history from API:', err);
+        }
+
+        _historyCache = null;
         renderHistory();
         updateHistoryCount();
         updateStats();
@@ -2661,12 +2752,12 @@ function clearHistory() {
 // STATS & UTILITIES
 // ==========================================
 function updateHistoryCount() {
-    const count = getHistory().length;
+    const count = getHistorySync().length;
     document.getElementById('historyCount').textContent = count;
 }
 
 function updateStats() {
-    const history = getHistory();
+    const history = getHistorySync();
     const now = new Date();
     const todayStr = now.toISOString().split('T')[0];
     const monthStr = now.toISOString().slice(0, 7);
@@ -2701,14 +2792,22 @@ function showToast(message, type = 'info') {
 // ==========================================
 // INIT
 // ==========================================
-window.onload = function() {
-    loadSettings();
+window.onload = async function() {
+    await loadSettings();
+
+    // Preload history into cache
+    try {
+        await getHistory();
+    } catch (err) {
+        console.warn('Could not preload history:', err);
+    }
+
     updateHistoryCount();
     updateStats();
 
     // Check if settings not set
     if (!settings.desa) {
-        showToast('⚠️ Silakan atur data desa terlebih dahulu di menu Pengaturan', 'info');
+        showToast('Silakan atur data desa terlebih dahulu di menu Pengaturan', 'info');
     }
 };
 </script>
