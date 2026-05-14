@@ -611,20 +611,20 @@
         }
 
         .surat-footer {
-            margin-top: 25px;
+            margin-top: 45px;
             text-align: right;
             font-family: 'Times New Roman', Times, serif;
             font-size: 11pt;
         }
 
         .surat-footer .ttd-area {
-            margin-top: 35px;
+            margin-top: 50px;
         }
 
         .surat-footer .ttd-name {
             font-weight: 700;
             text-decoration: underline;
-            margin-top: 4px;
+            margin-top: 45px;
         }
 
         .surat-footer .ttd-jabatan {
@@ -1041,6 +1041,10 @@
             <span class="icon">⚙️</span>
             <span>Pengaturan Desa</span>
         </div>
+        <div class="menu-item" onclick="showPage('masa-bakti')">
+            <span class="icon">👥</span>
+            <span>Masa Bakti RT/RW</span>
+        </div>
     </nav>
 </aside>
 
@@ -1269,6 +1273,13 @@
             </div>
         </div>
     </div>
+
+    <!-- PAGE: MASA BAKTI -->
+    <div class="page-section" id="page-masa-bakti">
+        <div class="page-content">
+            <div id="masaBaktiContainer"></div>
+        </div>
+    </div>
 </div>
 
 <!-- PREVIEW OVERLAY -->
@@ -1457,7 +1468,8 @@ function showPage(page) {
         'dashboard': ['Dashboard', 'Beranda'],
         'buat-surat': ['Buat Surat', 'Pembuatan Surat'],
         'riwayat': ['Riwayat Surat', 'Arsip Surat'],
-        'pengaturan': ['Pengaturan', 'Pengaturan Desa']
+        'pengaturan': ['Pengaturan', 'Pengaturan Desa'],
+        'masa-bakti': ['Masa Bakti', 'Masa Bakti RT/RW']
     };
 
     document.getElementById('pageTitle').textContent = titles[page][0];
@@ -1472,6 +1484,7 @@ function showPage(page) {
     });
 
     if (page === 'riwayat') renderHistory();
+    if (page === 'masa-bakti') renderMasaBakti();
     if (page === 'dashboard') updateStats();
 
     // Close sidebar on mobile
@@ -2861,6 +2874,78 @@ window.onload = async function() {
         showToast('Silakan atur data desa terlebih dahulu di menu Pengaturan', 'info');
     }
 };
+
+// ==========================================
+// MASA BAKTI RT/RW
+// ==========================================
+const masaBaktiData = [
+    { dusun: 'Dusun 1', rw: '01', rt: ['01','02','03','04','05','06'],RW: '01', totalRT: 6 },
+    { dusun: 'Dusun 1', rw: '02', rt: ['01','02','03','04','05','06'],RW: '02', totalRT: 6 },
+    { dusun: 'Dusun 2', rw: '03', rt: ['01','02','03','04'],RW: '03', totalRT: 4 },
+    { dusun: 'Dusun 3', rw: '04', rt: ['01','02','03','04'],RW: '04', totalRT: 4 },
+    { dusun: 'Dusun 3', rw: '05', rt: ['01','02'],RW: '05', totalRT: 2 },
+    { dusun: 'Dusun 2', rw: '06', rt: ['01','02','03'],RW: '06', totalRT: 3 },
+    { dusun: 'Dusun 3', rw: '07', rt: ['01','02','03'],RW: '07', totalRT: 3 }
+];
+
+function hitungSisaHari(awal, akhir) {
+    const now = new Date();
+    const start = new Date(awal);
+    const end = new Date(akhir);
+    if (now > end) return { sisa: 0, status: 'expired', warna: '#e74c3c' };
+    if (now < start) { const days = Math.ceil((start - now) / (1000*60*60*24)); return { sisa: days, status: 'pending', warna: '#f39c12' }; }
+    const days = Math.ceil((end - now) / (1000*60*60*24));
+    const tahun = Math.floor(days / 365);
+    const bulan = Math.floor((days % 365) / 30);
+    return { sisa: `${tahun} thn ${bulan} bln`, status: days > 90 ? 'active' : 'expired-soon', warna: days > 90 ? '#27ae60' : '#f39c12' };
+}
+
+function renderMasaBakti() {
+    const container = document.getElementById('masaBaktiContainer');
+    let html = '<h3 style="margin-bottom:16px;font-size:16px;">📅 Data Masa Bakti RT/RW</h3>';
+    
+    const dusunGroups = {};
+    masaBaktiData.forEach(item => {
+        if (!dusunGroups[item.dusun]) dusunGroups[item.dusun] = [];
+        dusunGroups[item.dusun].push(item);
+    });
+
+    for (const [dusun, items] of Object.entries(dusunGroups)) {
+        html += `<div style="background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:16px;overflow:hidden;">
+            <div style="background:var(--primary);color:white;padding:12px 16px;font-weight:700;font-size:14px;">📍 ${dusun}</div>
+            <div style="padding:12px;">`;
+        
+        items.forEach(item => {
+            const today = new Date();
+            const awal = new Date(today.getFullYear() + '-01-01');
+            const akhir = new Date(today.getFullYear() + 6 + '-12-31');
+            const { sisa, status, warna } = hitungSisaHari(awal, akhir);
+            
+            html += `<div style="background:#f8f9fa;border-radius:8px;padding:12px;margin-bottom:10px;border-left:4px solid var(--primary);">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                    <span style="font-weight:700;font-size:14px;color:var(--primary);">RW ${item.rw}</span>
+                    <span style="background:${warna};color:white;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:600;">${status === 'expired' ? 'Habis' : status === 'pending' ? 'Akan Datang' : sisa + ' hari lagi'}</span>
+                </div>
+                <div style="font-size:12px;color:var(--text-light);">
+                    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;">`;
+            
+            item.rt.forEach((rt, idx) => {
+                const nama = 'Nama Ketua RT ' + item.rw + '/' + rt;
+                html += `<div style="background:white;padding:8px;border-radius:6px;border:1px solid var(--border);">
+                    <div style="font-weight:600;color:var(--text);font-size:12px;">RT ${item.rw}/${rt}</div>
+                    <div style="font-size:11px;color:var(--text-light);">${nama}</div>
+                    <div style="font-size:10px;color:var(--text-light);margin-top:2px;">2025 - 2031</div>
+                </div>`;
+            });
+            
+            html += `</div></div></div>`;
+        });
+        
+        html += `</div></div>`;
+    }
+
+    container.innerHTML = html;
+}
 </script>
 
 </body>
