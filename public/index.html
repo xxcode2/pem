@@ -2149,7 +2149,7 @@ function generateSuratHTML(data) {
                     <p>Nomor: ${noSurat}</p>
                 </div>
                 <div class="surat-body">
-                    <p style="margin-bottom:12px;">Yang bertanda tangan di bawah ini, Kepala Desa ${s.desa || '...'}, Kecamatan ${s.kecamatan || '...'}, Kabupaten ${s.kabupaten || '...'}, menerangkan bahwa:</p>
+                    <p style="margin-bottom:4px;">Yang bertanda tangan di bawah ini, Kepala Desa ${s.desa || '...'}, Kecamatan ${s.kecamatan || '...'}, Kabupaten ${s.kabupaten || '...'}, menerangkan bahwa:</p>
                     <table>
                         <tr><td>Nama</td><td>:</td><td><strong>${data.nama}</strong></td></tr>
                         <tr><td>NIK</td><td>:</td><td>${data.nik}</td></tr>
@@ -2159,12 +2159,12 @@ function generateSuratHTML(data) {
                         <tr><td>Pekerjaan</td><td>:</td><td>${data.pekerjaan}</td></tr>
                         <tr><td>Alamat</td><td>:</td><td>${data.alamat} RT ${data.rt} RW ${data.rw} Desa ${s.desa} Kecamatan ${s.kecamatan} Kabupaten ${s.kabupaten}</td></tr>
                     </table>
-                    <p style="margin-top:14px;">Bahwa orang tersebut di atas benar-benar memiliki / menjalankan usaha:</p>
+                    <p style="margin-top:6px;">Bahwa orang tersebut di atas benar-benar memiliki / menjalankan usaha:</p>
                     <table>
                         <tr><td>Jenis Usaha</td><td>:</td><td>${data.jenisUsaha}</td></tr>
                         <tr><td>Alamat Usaha</td><td>:</td><td>${data.alamatUsaha}</td></tr>
                     </table>
-                    <p style="margin-top:14px;">Surat Keterangan ini diterbitkan untuk keperluan <strong>pengurusan dokumen</strong>. Demikian surat keterangan ini dibuat untuk dapat dipergunakan sebagaimana mestinya.</p>
+                    <p style="margin-top:6px;">Surat Keterangan ini diterbitkan untuk keperluan <strong>pengurusan dokumen</strong>. Demikian surat keterangan ini dibuat untuk dapat dipergunakan sebagaimana mestinya.</p>
                 </div>
             `;
             break;
@@ -2176,7 +2176,7 @@ function generateSuratHTML(data) {
                     <p>Nomor: ${noSurat}</p>
                 </div>
                 <div class="surat-body">
-                    <p style="margin-bottom:12px;">Yang bertanda tangan di bawah ini, Kepala Desa ${s.desa || '...'}, Kecamatan ${s.kecamatan || '...'}, Kabupaten ${s.kabupaten || '...'}, menerangkan bahwa:</p>
+                    <p style="margin-bottom:4px;">Yang bertanda tangan di bawah ini, Kepala Desa ${s.desa || '...'}, Kecamatan ${s.kecamatan || '...'}, Kabupaten ${s.kabupaten || '...'}, menerangkan bahwa:</p>
                     <table>
                         <tr><td>Nama</td><td>:</td><td><strong>${data.nama}</strong></td></tr>
                         <tr><td>NIK</td><td>:</td><td>${data.nik}</td></tr>
@@ -2186,32 +2186,32 @@ function generateSuratHTML(data) {
                         <tr><td>Pekerjaan</td><td>:</td><td>${data.pekerjaan}</td></tr>
                         <tr><td>Alamat KTP</td><td>:</td><td>${data.alamat} RT ${data.rt} RW ${data.rw} Desa ${s.desa} Kecamatan ${s.kecamatan} Kabupaten ${s.kabupaten}</td></tr>
                     </table>
-                    <p style="margin-top:14px;">Bahwa orang tersebut di atas benar-benar berdomisili / bertempat tinggal di:</p>
+                    <p style="margin-top:6px;">Bahwa orang tersebut di atas benar-benar berdomisili / bertempat tinggal di:</p>
                     <table>
                         <tr><td>Alamat Domisili</td><td>:</td><td><strong>${data.alamatDomisili}</strong></td></tr>
                         <tr><td>RT / RW</td><td>:</td><td>RT ${data.rt} RW ${data.rw}</td></tr>
                         <tr><td>Bertempat Tinggal Sejak</td><td>:</td><td>${data.sejakDomisili || '-'}</td></tr>
                     </table>
-                    <p style="margin-top:14px;">Surat Keterangan ini diterbitkan untuk keperluan <strong>${data.keperluanDomisili || '-'}</strong>. Demikian surat keterangan ini dibuat untuk dapat dipergunakan sebagaimana mestinya.</p>
+                    <p style="margin-top:6px;">Surat Keterangan ini diterbitkan untuk keperluan <strong>${data.keperluanDomisili || '-'}</strong>. Demikian surat keterangan ini dibuat untuk dapat dipergunakan sebagaimana mestinya.</p>
                 </div>
             `;
             break;
 
         case 'kematian':
             bodyHTML = `
-                <div class="surat-body" style="font-family:'Times New Roman',Times,serif;font-size:12pt;line-height:1.6;">
-                    <table style="margin-bottom:16px;">
+                <div class="surat-body" style="font-family:'Times New Roman',Times,serif;font-size:11pt;line-height:1.3;">
+                    <table style="margin-bottom:6px;">
                         <tr><td style="width:200px;">Pemerintah/Kota/Kab</td><td style="width:15px;">:</td><td>${s.kabupaten || '...'}</td></tr>
                         <tr><td>Kecamatan</td><td>:</td><td>${s.kecamatan || '...'}</td></tr>
                         <tr><td>Desa/Kelurahan</td><td>:</td><td>${s.desa || '...'}</td></tr>
                     </table>
 
-                    <div style="text-align:center;margin:16px 0 8px 0;">
-                        <h2 style="font-size:14pt;text-decoration:underline;text-transform:uppercase;font-weight:700;letter-spacing:1px;margin:0;">SURAT KETERANGAN KEMATIAN</h2>
-                        <p style="font-size:11pt;margin-top:0;">Nomor: ${noSurat}</p>
+                    <div style="text-align:center;margin:8px 0 4px 0;">
+                        <h2 style="font-size:13pt;text-decoration:underline;text-transform:uppercase;font-weight:700;letter-spacing:1px;margin:0;">SURAT KETERANGAN KEMATIAN</h2>
+                        <p style="font-size:10pt;margin-top:0;">Nomor: ${noSurat}</p>
                     </div>
 
-                    <p style="margin-bottom:14px;">Yang bertanda tangan dibawah ini menerangkan</p>
+                    <p style="margin:4px 0;">Yang bertanda tangan dibawah ini menerangkan</p>
 
                     <table>
                         <tr><td style="width:200px;">Nama</td><td style="width:15px;">:</td><td><strong>${data.namaAlm || data.nama}</strong></td></tr>
@@ -2222,7 +2222,7 @@ function generateSuratHTML(data) {
                         <tr><td>Alamat</td><td>:</td><td>${data.alamatAlm || data.alamat} RT ${data.rtAlm || data.rt} RW ${data.rwAlm || data.rw} Kec. ${s.kecamatan} Kab. ${s.kabupaten}</td></tr>
                     </table>
 
-                    <p style="margin-top:18px;">Telah meninggal dunia <span style="text-decoration:underline;">pada</span> :</p>
+                    <p style="margin:6px 0 4px 0;">Telah meninggal dunia <span style="text-decoration:underline;">pada</span> :</p>
                     <table>
                         <tr><td style="width:200px;">Hari</td><td style="width:15px;">:</td><td>${data.hariMeninggal || '-'}</td></tr>
                         <tr><td>Tanggal</td><td>:</td><td>${tanggalIndonesia(data.tglMeninggal)}</td></tr>
@@ -2230,7 +2230,7 @@ function generateSuratHTML(data) {
                         <tr><td>Penyebab Kematian</td><td>:</td><td>${data.penyebabMeninggal || '-'}</td></tr>
                     </table>
 
-                    <p style="margin-top:18px;">Surat Keterangan ini dibuat berdasarkan keterangan Pelapor :</p>
+                    <p style="margin:6px 0 4px 0;">Surat Keterangan ini dibuat berdasarkan keterangan Pelapor :</p>
                     <table>
                         <tr><td style="width:200px;">Nama Lengkap</td><td style="width:15px;">:</td><td><strong>${data.namaPelapor}</strong></td></tr>
                         <tr><td>Tanggal Lahir/Umur</td><td>:</td><td>${data.tglLahirPelapor || '-'}</td></tr>
@@ -2238,7 +2238,7 @@ function generateSuratHTML(data) {
                         <tr><td>Alamat</td><td>:</td><td>${data.alamatPelapor || data.alamatAlm || data.alamat} Kec. ${s.kecamatan} Kab. ${s.kabupaten}</td></tr>
                     </table>
 
-                    <p style="margin-top:18px;">Hubungan pelapor dengan yang meninggal adalah : <strong>${data.hubPelapor || '-'}</strong></p>
+                    <p style="margin:6px 0 4px 0;">Hubungan pelapor dengan yang meninggal adalah : <strong>${data.hubPelapor || '-'}</strong></p>
                 </div>
             `;
             break;
@@ -2250,7 +2250,7 @@ function generateSuratHTML(data) {
                     <p>Nomor: ${noSurat}</p>
                 </div>
                 <div class="surat-body">
-                    <p style="margin-bottom:12px;">Yang bertanda tangan di bawah ini, Kepala Desa ${s.desa || '...'}, Kecamatan ${s.kecamatan || '...'}, Kabupaten ${s.kabupaten || '...'}, menerangkan bahwa:</p>
+                    <p style="margin-bottom:4px;">Yang bertanda tangan di bawah ini, Kepala Desa ${s.desa || '...'}, Kecamatan ${s.kecamatan || '...'}, Kabupaten ${s.kabupaten || '...'}, menerangkan bahwa:</p>
                     <table>
                         <tr><td>Nama</td><td>:</td><td><strong>${data.nama}</strong></td></tr>
                         <tr><td>NIK</td><td>:</td><td>${data.nik}</td></tr>
@@ -2260,8 +2260,8 @@ function generateSuratHTML(data) {
                         <tr><td>Pekerjaan</td><td>:</td><td>${data.pekerjaan}</td></tr>
                         <tr><td>Alamat</td><td>:</td><td>${data.alamat} RT ${data.rt} RW ${data.rw} Desa ${s.desa} Kecamatan ${s.kecamatan} Kabupaten ${s.kabupaten}</td></tr>
                     </table>
-                    <p style="margin-top:14px;">Bahwa orang tersebut di atas berdasarkan pengamatan dan keterangan yang ada adalah benar <strong>${data.statusKawin}</strong>.</p>
-                    <p style="margin-top:14px;">Surat Keterangan ini diterbitkan untuk keperluan <strong>${data.keperluanBM || '-'}</strong>. Demikian surat keterangan ini dibuat untuk dapat dipergunakan sebagaimana mestinya.</p>
+                    <p style="margin-top:6px;">Bahwa orang tersebut di atas berdasarkan pengamatan dan keterangan yang ada adalah benar <strong>${data.statusKawin}</strong>.</p>
+                    <p style="margin-top:6px;">Surat Keterangan ini diterbitkan untuk keperluan <strong>${data.keperluanBM || '-'}</strong>. Demikian surat keterangan ini dibuat untuk dapat dipergunakan sebagaimana mestinya.</p>
                 </div>
             `;
             break;
@@ -2273,7 +2273,7 @@ function generateSuratHTML(data) {
                     <p>Nomor: ${noSurat}</p>
                 </div>
                 <div class="surat-body">
-                    <p style="margin-bottom:12px;">Yang bertanda tangan di bawah ini, Kepala Desa ${s.desa || '...'}, Kecamatan ${s.kecamatan || '...'}, Kabupaten ${s.kabupaten || '...'}, menerangkan bahwa:</p>
+                    <p style="margin-bottom:4px;">Yang bertanda tangan di bawah ini, Kepala Desa ${s.desa || '...'}, Kecamatan ${s.kecamatan || '...'}, Kabupaten ${s.kabupaten || '...'}, menerangkan bahwa:</p>
                     <table>
                         <tr><td>Nama</td><td>:</td><td><strong>${data.nama}</strong></td></tr>
                         <tr><td>NIK</td><td>:</td><td>${data.nik}</td></tr>
@@ -2283,11 +2283,11 @@ function generateSuratHTML(data) {
                         <tr><td>Pekerjaan</td><td>:</td><td>${data.pekerjaan}</td></tr>
                         <tr><td>Alamat</td><td>:</td><td>${data.alamat} RT ${data.rt} RW ${data.rw} Desa ${s.desa} Kecamatan ${s.kecamatan} Kabupaten ${s.kabupaten}</td></tr>
                     </table>
-                    <p style="margin-top:14px;">Bahwa orang tersebut di atas adalah benar berstatus sebagai <strong>${data.statusDJ}</strong> karena <strong>${data.sebabCerai || '-'}</strong> ${data.sebabCerai === 'Cerai Mati' ? 'pada tanggal ' + data.tglCerai : 'sejak tanggal ' + data.tglCerai}.</p>
+                    <p style="margin-top:6px;">Bahwa orang tersebut di atas adalah benar berstatus sebagai <strong>${data.statusDJ}</strong> karena <strong>${data.sebabCerai || '-'}</strong> ${data.sebabCerai === 'Cerai Mati' ? 'pada tanggal ' + data.tglCerai : 'sejak tanggal ' + data.tglCerai}.</p>
                     <table>
                         <tr><td>Nama Mantan Pasangan</td><td>:</td><td>${data.namaMantan || '-'}</td></tr>
                     </table>
-                    <p style="margin-top:14px;">Surat Keterangan ini diterbitkan untuk keperluan <strong>${data.keperluanDJ || '-'}</strong>. Demikian surat keterangan ini dibuat untuk dapat dipergunakan sebagaimana mestinya.</p>
+                    <p style="margin-top:6px;">Surat Keterangan ini diterbitkan untuk keperluan <strong>${data.keperluanDJ || '-'}</strong>. Demikian surat keterangan ini dibuat untuk dapat dipergunakan sebagaimana mestinya.</p>
                 </div>
             `;
             break;
@@ -2299,7 +2299,7 @@ function generateSuratHTML(data) {
                     <p>Nomor: ${noSurat}</p>
                 </div>
                 <div class="surat-body">
-                    <p style="margin-bottom:12px;">Yang bertanda tangan di bawah ini, Kepala Desa ${s.desa || '...'}, Kecamatan ${s.kecamatan || '...'}, Kabupaten ${s.kabupaten || '...'}, menerangkan bahwa:</p>
+                    <p style="margin-bottom:4px;">Yang bertanda tangan di bawah ini, Kepala Desa ${s.desa || '...'}, Kecamatan ${s.kecamatan || '...'}, Kabupaten ${s.kabupaten || '...'}, menerangkan bahwa:</p>
                     <table>
                         <tr><td>Nama</td><td>:</td><td><strong>${data.nama}</strong></td></tr>
                         <tr><td>NIK</td><td>:</td><td>${data.nik}</td></tr>
@@ -2309,13 +2309,13 @@ function generateSuratHTML(data) {
                         <tr><td>Pekerjaan</td><td>:</td><td>${data.pekerjaan}</td></tr>
                         <tr><td>Alamat</td><td>:</td><td>${data.alamat} RT ${data.rt} RW ${data.rw} Desa ${s.desa} Kecamatan ${s.kecamatan} Kabupaten ${s.kabupaten}</td></tr>
                     </table>
-                    <table style="margin-top:10px;">
+                    <table style="margin-top:4px;">
                         <tr><td>Penghasilan/Bulan</td><td>:</td><td><strong>${data.penghasilan}</strong></td></tr>
                         <tr><td>Jumlah Tanggungan</td><td>:</td><td>${data.jmlTanggungan} orang</td></tr>
                         <tr><td>Status Rumah</td><td>:</td><td>${data.statusRumah}</td></tr>
                     </table>
-                    <p style="margin-top:14px;">Bahwa orang tersebut di atas termasuk keluarga <strong>Tidak Mampu / Miskin</strong>.</p>
-                    <p style="margin-top:14px;">Surat Keterangan ini diterbitkan untuk keperluan <strong>${data.keperluanSKTM || '-'}</strong>. Demikian surat keterangan ini dibuat untuk dapat dipergunakan sebagaimana mestinya.</p>
+                    <p style="margin-top:6px;">Bahwa orang tersebut di atas termasuk keluarga <strong>Tidak Mampu / Miskin</strong>.</p>
+                    <p style="margin-top:6px;">Surat Keterangan ini diterbitkan untuk keperluan <strong>${data.keperluanSKTM || '-'}</strong>. Demikian surat keterangan ini dibuat untuk dapat dipergunakan sebagaimana mestinya.</p>
                 </div>
             `;
             break;
@@ -2327,7 +2327,7 @@ function generateSuratHTML(data) {
                     <p>Nomor: ${noSurat}</p>
                 </div>
                 <div class="surat-body">
-                    <p style="margin-bottom:12px;">Yang bertanda tangan di bawah ini, Kepala Desa ${s.desa || '...'}, Kecamatan ${s.kecamatan || '...'}, Kabupaten ${s.kabupaten || '...'}, menerangkan bahwa:</p>
+                    <p style="margin-bottom:4px;">Yang bertanda tangan di bawah ini, Kepala Desa ${s.desa || '...'}, Kecamatan ${s.kecamatan || '...'}, Kabupaten ${s.kabupaten || '...'}, menerangkan bahwa:</p>
                     <table>
                         <tr><td>Nama</td><td>:</td><td><strong>${data.nama}</strong></td></tr>
                         <tr><td>NIK</td><td>:</td><td>${data.nik}</td></tr>
@@ -2337,7 +2337,7 @@ function generateSuratHTML(data) {
                         <tr><td>Pekerjaan</td><td>:</td><td>${data.pekerjaan}</td></tr>
                         <tr><td>Alamat Asal</td><td>:</td><td>${data.alamat} RT ${data.rt} RW ${data.rw} Desa ${s.desa} Kecamatan ${s.kecamatan} Kabupaten ${s.kabupaten}</td></tr>
                     </table>
-                    <p style="margin-top:14px;">Akan pindah domisili ke:</p>
+                    <p style="margin-top:6px;">Akan pindah domisili ke:</p>
                     <table>
                         <tr><td>Alamat Tujuan</td><td>:</td><td><strong>${data.alamatTujuan}</strong></td></tr>
                         <tr><td>RT/RW Tujuan</td><td>:</td><td>${data.rtRwTujuan}</td></tr>
@@ -2347,8 +2347,8 @@ function generateSuratHTML(data) {
                         <tr><td>Provinsi</td><td>:</td><td>${data.provTujuan}</td></tr>
                         <tr><td>Jumlah Pindah</td><td>:</td><td>${data.jmlPindah} orang</td></tr>
                     </table>
-                    <p style="margin-top:14px;">Alasan pindah: <strong>${data.alasanPindah}</strong></p>
-                    <p style="margin-top:14px;">Demikian surat keterangan pindah ini dibuat untuk dapat dipergunakan sebagaimana mestinya.</p>
+                    <p style="margin-top:6px;">Alasan pindah: <strong>${data.alasanPindah}</strong></p>
+                    <p style="margin-top:6px;">Demikian surat keterangan pindah ini dibuat untuk dapat dipergunakan sebagaimana mestinya.</p>
                 </div>
             `;
             break;
@@ -2360,7 +2360,7 @@ function generateSuratHTML(data) {
                     <p>Nomor: ${noSurat}</p>
                 </div>
                 <div class="surat-body">
-                    <p style="margin-bottom:12px;">Yang bertanda tangan di bawah ini, Kepala Desa ${s.desa || '...'}, Kecamatan ${s.kecamatan || '...'}, Kabupaten ${s.kabupaten || '...'}, menerangkan bahwa:</p>
+                    <p style="margin-bottom:4px;">Yang bertanda tangan di bawah ini, Kepala Desa ${s.desa || '...'}, Kecamatan ${s.kecamatan || '...'}, Kabupaten ${s.kabupaten || '...'}, menerangkan bahwa:</p>
                     <p style="margin-bottom:12px;">Telah lahir seorang anak:</p>
                     <table>
                         <tr><td>Nama Bayi</td><td>:</td><td><strong>${data.namaBayi}</strong></td></tr>
@@ -2369,14 +2369,14 @@ function generateSuratHTML(data) {
                         <tr><td>Waktu Lahir</td><td>:</td><td>${data.waktuLahir || '-'}</td></tr>
                         <tr><td>Anak Ke-</td><td>:</td><td>${data.anakKe}</td></tr>
                     </table>
-                    <p style="margin-top:14px;">Dari pasangan:</p>
+                    <p style="margin-top:6px;">Dari pasangan:</p>
                     <table>
                         <tr><td>Nama Ayah</td><td>:</td><td><strong>${data.namaAyah}</strong></td></tr>
                         <tr><td>NIK Ayah</td><td>:</td><td>${data.nikAyah}</td></tr>
                         <tr><td>Nama Ibu</td><td>:</td><td><strong>${data.namaIbu}</strong></td></tr>
                         <tr><td>NIK Ibu</td><td>:</td><td>${data.nikIbu}</td></tr>
                     </table>
-                    <p style="margin-top:14px;">Demikian surat keterangan lahir ini dibuat untuk dapat dipergunakan sebagaimana mestinya.</p>
+                    <p style="margin-top:6px;">Demikian surat keterangan lahir ini dibuat untuk dapat dipergunakan sebagaimana mestinya.</p>
                 </div>
             `;
             break;
@@ -2547,7 +2547,6 @@ async function saveAndPrint() {
 function printSurat() {
     const printContent = document.getElementById('previewContent').innerHTML;
     const isKematian = currentForm === 'kematian';
-    const pageOrientation = isKematian ? '@page { size: landscape; margin: 0; }' : '@page { size: portrait; margin: 0; }';
     const printWindow = window.open('', '_blank');
     printWindow.document.write(`
         <!DOCTYPE html>
@@ -2555,28 +2554,33 @@ function printSurat() {
         <head>
             <title></title>
             <style>
-                body { font-family: 'Times New Roman', Times, serif; margin: 20px 40px; padding: 0; font-size: 12pt; line-height: 1.6; }
-                .surat-kop { display: flex; align-items: center; border-bottom: 3px double #333; padding-bottom: 10px; margin-bottom: 16px; gap: 6px; }
-                .surat-kop .kop-logo { width: 75px; min-width: 75px; }
-                .surat-kop .kop-logo img { width: 75px; height: 75px; object-fit: contain; }
+                @page { margin: 0; size: A4; }
+                html, body { height: auto !important; overflow: visible !important; }
+                body { font-family: 'Times New Roman', Times, serif; margin: 10px 25px; padding: 0; font-size: 11pt; line-height: 1.3; }
+                .surat-kop { display: flex; align-items: center; border-bottom: 3px double #333; padding-bottom: 8px; margin-bottom: 10px; gap: 6px; }
+                .surat-kop .kop-logo { width: 70px; min-width: 70px; }
+                .surat-kop .kop-logo img { width: 70px; height: 70px; object-fit: contain; }
                 .surat-kop .kop-text { flex: 1; text-align: center; }
-                .surat-kop .kop-title { font-size: 13pt; font-weight: 700; text-transform: uppercase; }
-                .surat-kop .kop-subtitle { font-size: 16pt; font-weight: 800; text-transform: uppercase; margin: 4px 0; }
-                .surat-kop .kop-address { font-size: 10pt; color: #444; }
-                .surat-title { text-align: center; margin: 16px 0 8px 0; }
-                .surat-title h2 { font-size: 13pt; text-decoration: underline; text-transform: uppercase; font-weight: 700; margin: 0; }
-                .surat-title p { font-size: 11pt; margin-top: 0; }
-                .surat-body { font-size: 12pt; line-height: 1.5; text-align: justify; }
-                .surat-body table { width: 100%; margin: 4px 0; border-collapse: collapse; }
-                .surat-body table td { padding: 1px 8px; vertical-align: top; font-size: 12pt; line-height: 1.4; }
+                .surat-kop .kop-title { font-size: 13px; font-weight: 700; text-transform: uppercase; }
+                .surat-kop .kop-kecamatan { font-size: 13px; font-weight: 700; text-transform: uppercase; }
+                .surat-kop .kop-subtitle { font-size: 18px; font-weight: 800; text-transform: uppercase; margin: 2px 0; }
+                .surat-kop .kop-address { font-size: 9pt; color: #444; }
+                .surat-title { text-align: center; margin: 10px 0 6px 0; }
+                .surat-title h2 { font-size: 13px; text-decoration: underline; text-transform: uppercase; font-weight: 700; margin: 0; }
+                .surat-title p { font-size: 10pt; margin-top: 0; }
+                .surat-body { font-size: 11pt; line-height: 1.3; text-align: justify; }
+                .surat-body p { margin: 4px 0; }
+                .surat-body table { width: 100%; margin: 2px 0; border-collapse: collapse; }
+                .surat-body table td { padding: 0px 6px; vertical-align: top; font-size: 11pt; line-height: 1.3; }
                 .surat-body table td:first-child { width: 160px; font-weight: 600; }
                 .surat-body table td:nth-child(2) { width: 15px; }
-                .surat-footer { margin-top: 40px; text-align: right; font-size: 12pt; }
-                .surat-footer p { margin: 0; line-height: 1.4; }
-                .surat-footer .ttd-area { margin-top: 50px; }
+                .surat-footer { margin-top: 20px; text-align: right; font-size: 11pt; }
+                .surat-footer p { margin: 0; line-height: 1.3; }
+                .surat-footer .ttd-area { margin-top: 35px; }
                 .surat-footer .ttd-name { font-weight: 700; text-decoration: underline; }
                 .surat-footer .ttd-jabatan { font-size: 10pt; }
-                ${pageOrientation}
+                .preview-content { min-height: 0 !important; }
+                * { page-break-inside: avoid; }
             </style>
         </head>
         <body>
