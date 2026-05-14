@@ -1,9 +1,10 @@
-const { getDb } = require('./db');
+const { getDb, ensureTablesExist } = require('./db');
 
 module.exports = async function handler(req, res) {
     const sql = getDb();
 
     try {
+        await ensureTablesExist();
         if (req.method === 'GET') {
             const rows = await sql`SELECT * FROM settings WHERE id = 1`;
             if (rows.length === 0) {

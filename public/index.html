@@ -516,17 +516,17 @@
             border-bottom: 3px double #333;
             padding-bottom: 10px;
             margin-bottom: 16px;
-            gap: 6px;
+            gap: 2px;
         }
 
         .surat-kop .kop-logo {
-            width: 75px;
-            min-width: 75px;
+            width: 95px;
+            min-width: 95px;
         }
 
         .surat-kop .kop-logo img {
-            width: 75px;
-            height: 75px;
+            width: 95px;
+            height: 95px;
             object-fit: contain;
         }
 
@@ -536,24 +536,31 @@
         }
 
         .surat-kop .kop-title {
-            font-size: 16px;
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .surat-kop .kop-kecamatan {
+            font-size: 15px;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
         .surat-kop .kop-subtitle {
-            font-size: 20px;
+            font-size: 22px;
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 2px;
-            margin: 4px 0;
+            margin: 2px 0;
         }
 
         .surat-kop .kop-address {
             font-size: 11px;
             color: #444;
-            line-height: 1.5;
+            line-height: 1.4;
         }
 
         .surat-title {
@@ -2119,7 +2126,7 @@ function generateSuratHTML(data) {
             ${logoHTML}
             <div class="kop-text">
                 <div class="kop-title">PEMERINTAH KABUPATEN ${s.kabupaten?.toUpperCase() || '...'}</div>
-                <div class="kop-title">KECAMATAN ${s.kecamatan?.toUpperCase() || '...'}</div>
+                <div class="kop-kecamatan">KECAMATAN ${s.kecamatan?.toUpperCase() || '...'}</div>
                 <div class="kop-subtitle">DESA ${s.desa?.toUpperCase() || '...'}</div>
                 <div class="kop-address">${s.alamat || 'Alamat Desa'} Kode Pos ${s.kodePos || '-'}</div>
             </div>
