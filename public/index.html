@@ -2594,6 +2594,23 @@ function printSurat() {
     }
     
     const printWindow = window.open('', '_blank');
+    const fontSize = isKematian ? '7pt' : '12pt';
+    const lineHeight = isKematian ? '1.1' : '1.5';
+    const kopLogoSize = isKematian ? '45px' : '85px';
+    const kopTitleSize = isKematian ? '7pt' : '12pt';
+    const kopSubtitleSize = isKematian ? '9pt' : '16pt';
+    const kopAddressSize = isKematian ? '6pt' : '10pt';
+    const titleSize = isKematian ? '7pt' : '13pt';
+    const titlePSize = isKematian ? '6pt' : '11pt';
+    const tdFirstWidth = isKematian ? '70px' : '160px';
+    const tdSecondWidth = isKematian ? '4px' : '15px';
+    const footerMargin = isKematian ? '8px' : '45px';
+    const ttdMargin = isKematian ? '35px' : '50px';
+    const ttdJabatanSize = isKematian ? '6pt' : '10pt';
+    const kopPadding = isKematian ? '3px' : '10px';
+    const kopMargin = isKematian ? '4px' : '10px';
+    const titleMargin = isKematian ? '4px' : '12px';
+
     printWindow.document.write(`
         <!DOCTYPE html>
         <html>
@@ -2608,25 +2625,25 @@ function printSurat() {
                 @media print {
                     @page { margin: 0; }
                 }
-                .surat-kop { display: flex; align-items: center; border-bottom: 2px double #333; padding-bottom: 3px; margin-bottom: 4px; gap: 2px; }
-                .surat-kop .kop-logo { width: 45px; min-width: 45px; }
-                .surat-kop .kop-logo img { width: 45px; height: 45px; object-fit: contain; }
+                .surat-kop { display: flex; align-items: center; border-bottom: 2px double #333; padding-bottom: ${kopPadding}; margin-bottom: ${kopMargin}; gap: 2px; }
+                .surat-kop .kop-logo { width: ${kopLogoSize}; min-width: ${kopLogoSize}; }
+                .surat-kop .kop-logo img { width: ${kopLogoSize}; height: ${kopLogoSize}; object-fit: contain; }
                 .surat-kop .kop-text { flex: 1; text-align: center; }
-                .surat-kop .kop-title { font-size: 7pt; font-weight: 700; text-transform: uppercase; }
-                .surat-kop .kop-subtitle { font-size: 9pt; font-weight: 800; text-transform: uppercase; margin: 0; }
-                .surat-kop .kop-address { font-size: 6pt; color: #444; }
-                .surat-title { text-align: center; margin: 4px 0; }
-                .surat-title h2 { font-size: 7pt; text-decoration: underline; text-transform: uppercase; font-weight: 700; margin: 0; }
-                .surat-title p { font-size: 6pt; margin: 0; }
-                .surat-body { font-size: 7pt; line-height: 1.1; text-align: justify; }
+                .surat-kop .kop-title { font-size: ${kopTitleSize}; font-weight: 700; text-transform: uppercase; }
+                .surat-kop .kop-subtitle { font-size: ${kopSubtitleSize}; font-weight: 800; text-transform: uppercase; margin: 0; }
+                .surat-kop .kop-address { font-size: ${kopAddressSize}; color: #444; }
+                .surat-title { text-align: center; margin: ${titleMargin} 0; }
+                .surat-title h2 { font-size: ${titleSize}; text-decoration: underline; text-transform: uppercase; font-weight: 700; margin: 0; }
+                .surat-title p { font-size: ${titlePSize}; margin: 0; }
+                .surat-body { font-size: ${fontSize}; line-height: ${lineHeight}; text-align: justify; }
                 .surat-body table { width: 100%; margin: 1px 0; border-collapse: collapse; }
-                .surat-body table td { padding: 0 2px; vertical-align: top; font-size: 7pt; line-height: 1.1; }
-                .surat-body table td:first-child { width: 70px; font-weight: 600; }
-                .surat-body table td:nth-child(2) { width: 4px; }
-                .surat-footer { margin-top: 8px; text-align: right; font-size: 7pt; flex-grow: 1; display: flex; flex-direction: column; justify-content: flex-end; }
-                .surat-footer .ttd-area { margin-top: 35px; }
-                .surat-footer .ttd-name { font-weight: 700; text-decoration: underline; margin-top: 35px; }
-                .surat-footer .ttd-jabatan { font-size: 6pt; }
+                .surat-body table td { padding: 0 2px; vertical-align: top; font-size: ${fontSize}; line-height: ${lineHeight}; }
+                .surat-body table td:first-child { width: ${tdFirstWidth}; font-weight: 600; }
+                .surat-body table td:nth-child(2) { width: ${tdSecondWidth}; }
+                .surat-footer { margin-top: ${footerMargin}; text-align: right; font-size: ${fontSize}; flex-grow: 1; display: flex; flex-direction: column; justify-content: flex-end; }
+                .surat-footer .ttd-area { margin-top: ${ttdMargin}; }
+                .surat-footer .ttd-name { font-weight: 700; text-decoration: underline; margin-top: ${ttdMargin}; }
+                .surat-footer .ttd-jabatan { font-size: ${ttdJabatanSize}; }
                 ${pageStyle}
             </style>
         </head>
